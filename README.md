@@ -3,7 +3,7 @@ realmscript
 
 An AHK (AutoHotKey) script for Realm of the Mad God
 
-Features:
+Features: [needs update]
 * Right click sends shift+left click and resends left click if it was set when right clicking
 * Shift+right click sends right click
 * Several text send hotkeys
