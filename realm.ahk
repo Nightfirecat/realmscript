@@ -49,7 +49,20 @@ Return
 Click right
 Return
 
+; /who on ctrl+w
+^w::
+ClipSaved = %clipboard%
+clipboard = /who
+goto ek
+
+; /server on ctrl+s
+^s::
+ClipSaved = %clipboard%
+clipboard = /server
+goto ek
+
 ; sets clipboard and sends off to ek (function to send clipboard using enter key)
+;;;;; CHANGE ANY OF THE "clipboard = ___" TEXT OR BIND KEYS TO YOUR PREFERENCE
 F1::
 ClipSaved = %clipboard%
 clipboard = Heal please?
@@ -125,13 +138,35 @@ clipboard = /teleport %tptarget%
 goto ek
 
 ; double click on slot 1 in the inventory on ctrl+1 or 2
-;;^1::
-;;slot = 1
-;;goto swap
+^1::
+slot = 1	;;;;; CHANGE TO YOUR WEAPON SWAP INVENTORY SLOT
+goto swap
 
-;;^2::
-;;slot = 2
-;;goto swap
+^2::
+slot = 2	;;;;; CHANGE TO YOUR ABILITY SWAP INVENTORY SLOT
+goto swap
+
+; fixed interact with ctrl+f
+; KNOWN ISSUE: Will click mouse button at current location if image is not found.
+^f::
+MouseGetPos, mousePosX, mousePosY ;mousePosX/Y have old mouse position
+WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
+ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\enter-low.png
+if ErrorLevel
+	ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\change-low.png
+	if ErrorLevel
+		ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\enter-high.png
+		if ErrorLevel
+			ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\change-high.png
+			if ErrorLevel
+				ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\enter-med.png
+				if ErrorLevel
+					ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\change-med.png
+MouseMove, imageLocX + 35, imageLocY + 14
+SendEvent {LButton Down}
+SendEvent {LButton Up}
+MouseMove, mousePosX, mousePosY
+Return
 
 ; scroll the chat log with the default in game keybinds
 +WheelUp::Send {PgUp}
@@ -150,131 +185,6 @@ Sleep 100
 clipboard = %ClipSaved%
 ClipSaved = ;save memory
 Return
-
-; go to the character select
-;;^r::
-;;MouseGetPos, mousePosX, mousePosY
-;;WinGetPos, , , winSizeX, winSizeY, A
-;;Send {Esc}
-;;Loop
-;;{
-;;	ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\charsel.png
-;;	if ErrorLevel = 1
-;;		continue
-;;	else
-;;		break
-;;}
-;;MouseClick, Left, imageLocX, imageLocY, 1
-;;MouseClick, Left, imageLocX-240, imageLocY, 1 ; back to home is bugged
-;;MouseMove, mousePosX, mousePosY
-;;Return
-
-; go to the server select screen
-;;+^r::
-;;MouseGetPos, mousePosX, mousePosY
-;;WinGetPos, , , winSizeX, winSizeY, A
-;;Send {Esc}
-;;Loop
-;;{
-;;	ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\charsel.png
-;;	if ErrorLevel = 1
-;;		continue
-;;	else
-;;		break
-;;}
-;;MouseClick, Left, imageLocX, imageLocY, 1
-;;MouseClick, Left, imageLocX-240, imageLocY, 1 ; back to home is bugged
-;;Loop
-;;{
-;;	PixelGetColor, color, imageLocX-305, imageLocY, RGB
-;;	if color = 0xFFFFFF
-;;		break
-;;	else
-;;		continue
-;;}
-;;MouseClick, Left, imageLocX-300, imageLocY, 1
-;;MouseClick, Left, imageLocX-300, imageLocY, 1
-;;MouseMove, mousePosX, mousePosY
-;;Return
-
-; select all 8 slots while trading
-;;^a::
-;;MouseGetPos, mousePosX, mousePosY
-;;WinGetPos, , , winSizeX, winSizeY, A
-;;ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\trade.png
-;;Xinc = 0
-;;Yinc = 250
-;;Loop 2
-;;{
-;;	Loop 4
-;;	{
-;;		MouseClick, Left, imageLocX+Xinc, imageLocY-Yinc, 1
-;;		Xinc += 44
-;;	}
-;;	Xinc = 0
-;;	Yinc -= 50
-;;}
-;;MouseMove, mousePosX, mousePosY
-;;return
-
-; pick up all 8 slots
-;;^w::
-;;SendMode Event
-;;MouseGetPos, mousePosX, mousePosY
-;;WinGetPos, , , winSizeX, winSizeY, A
-;;ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\searchimage.png
-;;imageLocX += 25
-;;imageLocY += 55
-;;Xinc = 0
-;;Yinc = 0
-;;Loop 2
-;;{
-;;	Loop 4
-;;	{
-;;		MouseMove, imageLocX + Xinc, imageLocY + Yinc
-;;		SendEvent {LButton Down}
-;;		MouseMove, imageLocX + Xinc + 3, imageLocY + Yinc + 3
-;;		Sleep 260
-;;		MouseMove, imageLocX + Xinc, imageLocY + Yinc - 125
-;;		SendEvent {LButton Up}
-;;		Sleep 260
-;;		Xinc += 44
-;;	}
-;;	Xinc = 0
-;;	Yinc += 50
-;;}
-;;MouseMove, mousePosX, mousePosY
-;;Return
-
-; drop all items in chest
-;;^d::
-;;SendMode Event
-;;MouseGetPos, mousePosX, mousePosY
-;;WinGetPos, , , winSizeX, winSizeY, A
-;;ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\searchimage.png
-;;imageLocX += 25
-;;imageLocY -= 70
-;;MouseMove, imageLocX, imageLocY
-;;Xinc = 0
-;;Yinc = 0
-;;Loop 2
-;;{
-;;	Loop 4
-;;	{
-;;		MouseMove, imageLocX + Xinc, imageLocY + Yinc
-;;		SendEvent {LButton Down}
-;;		MouseMove, imageLocX + Xinc + 3, imageLocY + Yinc + 3
-;;		Sleep 260
-;;		MouseMove, imageLocX + Xinc, imageLocY + Yinc + 125
-;;		SendEvent {LButton Up}
-;;		Sleep 260
-;;		Xinc += 44
-;;	}
-;;	Xinc = 0
-;;	Yinc += 50
-;;}
-;;MouseMove, mousePosX, mousePosY
-;;Return
 
 ; sends clipboard to the chat using the enter key
 ek:
@@ -297,11 +207,24 @@ Send {Enter}
 Blockinput, off
 Return
 
-; swap function
-;;swap:
-;;MouseGetPos, mousePosX, mousePosY
-;;WinGetPos, , , winSizeX, winSizeY, A
-;;ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\searchimage.png
-;;MouseClick, Left, imageLocX + (44 * slot) + 30, imageLocY - 20, 2
-;;MouseMove, mousePosX, mousePosY
-;;Return
+; swap function [inventory squares are 44px wide]
+swap:
+MouseGetPos, mousePosX, mousePosY ;mousePosX/Y have old mouse position
+WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
+; imageLocX/Y have upper-left pixel of image when found,
+; halved win sizes start search in middle of screen,
+; whole win sizes end search in lower-right corner,
+; img\inv-[low|med|high] will search for the image in every quality level if necessary
+ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\inv-low.png
+if ErrorLevel
+	ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\inv-high.png
+	if ErrorLevel
+		ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\inv-med.png
+; move the mouse to the correct slot, double-click (using events), and move it back
+MouseMove, imageLocX + 30 + Mod((44 * (slot-1)), (4*44)), imageLocY + 50 + (44 * ((slot-1)//(4)))
+SendEvent {LButton Down}
+SendEvent {LButton Up}
+SendEvent {LButton Down}
+SendEvent {LButton Up}
+MouseMove, mousePosX, mousePosY
+Return
