@@ -1,9 +1,9 @@
 realmscript
 ===========
 
-An AHK (AutoHotKey) script for Realm of the Mad God
+An AHK (AutoHotKey) script for Realm of the Mad God. (you'll need to download [Autohotkey](http://www.autohotkey.com/) for this to work)
 
-Note: To find lines that require (or advise) changing, search the realmscript.ahk file for ;;;;; (five consecutive semicolons), and modify those lines or areas as needed. Do not change other lines of the program unless experienced in AHK scripting.
+Edit binds and hotkeys as necessary, as directed by the comments. (the text that appears after semicolons `;`)
 
 Features:
 * Right click sends shift+left click and resends left click if it was set when right clicking
