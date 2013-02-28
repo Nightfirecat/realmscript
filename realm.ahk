@@ -43,6 +43,13 @@ WinNotActive()
 ; Add/change the hotkeys and/or binds (the text after 'clipboard = ') to your preference ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+
+
+
+
+
+
 ^w::
 ClipSaved = %clipboard%
 clipboard = /who
@@ -101,6 +108,13 @@ goto swap
 slot = 2	;;;;; CHANGE TO YOUR ABILITY SWAP INVENTORY SLOT
 goto swap
 
+
+
+
+
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; DO NOT EDIT BELOW UNLESS VERSED IN AUTOHOTKEY ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -124,21 +138,47 @@ goto ek
 ^f::
 MouseGetPos, mousePosX, mousePosY
 WinGetPos, , , winSizeX, winSizeY, A
+SysGet, menuHeight, 15
+SysGet, vBorderWidth, 32
+SysGet, hBorderWidth, 33
+SysGet, titleHeight, 4
 ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\enter-low.png
-if ErrorLevel
+if ErrorLevel{
 	ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\change-low.png
-	if ErrorLevel
+	if ErrorLevel{
 		ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\enter-high.png
-		if ErrorLevel
+		if ErrorLevel{
 			ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\change-high.png
-			if ErrorLevel
+			if ErrorLevel{
 				ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\enter-med.png
-				if ErrorLevel
+				if ErrorLevel{
 					ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\change-med.png
-MouseMove, imageLocX + 35, imageLocY + 14
+					if ErrorLevel{
+						stretched := true
+					}
+				}
+			}
+		}
+	}
+}
+if(stretched){
+	posX := 698
+	posY := 575
+	multiplierX := ((winSizeX-(vBorderWidth*2))/800)
+	multiplierY := ((winSizeY-(menuHeight+(hBorderWidth*2)+titleHeight))/600)
+	posX *= multiplierX
+	posY *= multiplierY
+} else {
+	posX := imageLocX + 35 - (vBorderWidth*2)
+	posY := imageLocY + 14 - (menuHeight+(hBorderWidth*2)+titleHeight)
+}
+CoordMode, Mouse, Client
+MouseMove, posX, posY
 SendEvent {LButton Down}
 SendEvent {LButton Up}
+CoordMode, Mouse, Window
 MouseMove, mousePosX, mousePosY
+stretched := false
 Return
 
 +WheelUp::Send {PgUp}
@@ -171,15 +211,38 @@ Return
 swap:
 MouseGetPos, mousePosX, mousePosY
 WinGetPos, , , winSizeX, winSizeY, A
+SysGet, menuHeight, 15
+SysGet, vBorderWidth, 32
+SysGet, hBorderWidth, 33
+SysGet, titleHeight, 4
 ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\inv-low.png
-if ErrorLevel
+if ErrorLevel {
 	ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\inv-high.png
-	if ErrorLevel
+	if ErrorLevel {
 		ImageSearch, imageLocX, imageLocY, %winSizeX%/2, %winSizeY%/2, %winSizeX%, %winSizeY%, img\inv-med.png
-MouseMove, imageLocX + 30 + Mod((44 * (slot-1)), (4*44)), imageLocY + 50 + (44 * ((slot-1)//(4)))
+		if ErrorLevel {
+			stretched := true
+		}
+	}
+}
+if(stretched){
+	posX := 634 + Mod((44 * (slot-1)), (4*44))
+	posY := 400 + (44 * ((slot-1)//(4)))
+	multiplierX := ((winSizeX-(vBorderWidth*2))/800)
+	multiplierY := ((winSizeY-(menuHeight+(hBorderWidth*2)+titleHeight))/600)
+	posX *= multiplierX
+	posY *= multiplierY
+} else {
+	posX := imageLocX + 30 + Mod((44 * (slot-1)), (4*44)) - (vBorderWidth*2)
+	posY := imageLocY + 50 + (44 * ((slot-1)//(4))) - (menuHeight+(hBorderWidth*2)+titleHeight)
+}
+CoordMode, Mouse, Client
+MouseMove, posX, posY
 SendEvent {LButton Down}
 SendEvent {LButton Up}
 SendEvent {LButton Down}
 SendEvent {LButton Up}
+CoordMode, Mouse, Window
 MouseMove, mousePosX, mousePosY
+stretched := false
 Return
