@@ -5,12 +5,10 @@ An <abbr title="AutoHotKey">AHK</abbr> script for Realm of the Mad God, enhancin
 with hotkeys for useful text and click macros.
 
 ##Download
-- - -
 
 You can [download the project's files here](https://github.com/Nightfirecat/realmscript/archive/master.zip).
 
 ##Directions for Use
-- - -
 
 * Extract the archive to a folder of your choice.
 * Install [Autohotkey](http://www.autohotkey.com/) for Windows or [IronAHK](http://www.ironahk.net/)
@@ -21,7 +19,6 @@ You can [download the project's files here](https://github.com/Nightfirecat/real
   the text that appears after semicolons. (`;`)
 
 ##Default Binds
-- - -
 
 * `` ` `` : `/pause`
 * `F1` : `Heal please?`
@@ -46,7 +43,6 @@ You can [download the project's files here](https://github.com/Nightfirecat/real
 * <kbd>shift</kbd> + scroll-wheel-down : <kbd>Page Down</kbd> (for scrolling chat down)
 
 ##Features
-- - -
 
 * Right click sends shift+left click and resends left click if it was set when right clicking
 * Ctrl+right click sends right click
@@ -60,7 +56,6 @@ You can [download the project's files here](https://github.com/Nightfirecat/real
 * Ctrl+f acts as a fixed interact key for portals and character select
 
 ##Personal Thanks
-- - -
 
 I'd like to extend a big personal thanks to a couple people who made this project possible.  
 I'd like to thank **[NGJMoses](http://www.realmeye.com/player/ngjmoses/)** for his
