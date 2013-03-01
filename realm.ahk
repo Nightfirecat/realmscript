@@ -164,13 +164,13 @@ if ErrorLevel{
 if(stretched){
 	posX := 698
 	posY := 575
-	multiplierX := ((winSizeX-(vBorderWidth*2))/800)
-	multiplierY := ((winSizeY-(menuHeight+(hBorderWidth*2)+titleHeight))/600)
+	multiplierX := ((winSizeX-vBorderWidth)/800)
+	multiplierY := ((winSizeY-(menuHeight+hBorderWidth+titleHeight))/600)
 	posX *= multiplierX
 	posY *= multiplierY
 } else {
-	posX := imageLocX + 35 - (vBorderWidth*2)
-	posY := imageLocY + 14 - (menuHeight+(hBorderWidth*2)+titleHeight)
+	posX := imageLocX + 35 - vBorderWidth
+	posY := imageLocY + 14 - (menuHeight+hBorderWidth+titleHeight)
 }
 CoordMode, Mouse, Client
 MouseMove, posX, posY
@@ -228,13 +228,13 @@ if ErrorLevel {
 if(stretched){
 	posX := 634 + Mod((44 * (slot-1)), (4*44))
 	posY := 400 + (44 * ((slot-1)//(4)))
-	multiplierX := ((winSizeX-(vBorderWidth*2))/800)
-	multiplierY := ((winSizeY-(menuHeight+(hBorderWidth*2)+titleHeight))/600)
+	multiplierX := ((winSizeX-vBorderWidth)/800)
+	multiplierY := ((winSizeY-(menuHeight+hBorderWidth+titleHeight))/600)
 	posX *= multiplierX
 	posY *= multiplierY
 } else {
-	posX := imageLocX + 30 + Mod((44 * (slot-1)), (4*44)) - (vBorderWidth*2)
-	posY := imageLocY + 50 + (44 * ((slot-1)//(4))) - (menuHeight+(hBorderWidth*2)+titleHeight)
+	posX := imageLocX + 30 + Mod((44 * (slot-1)), (4*44)) - vBorderWidth
+	posY := imageLocY + 50 + (44 * ((slot-1)//(4))) - (menuHeight+hBorderWidth+titleHeight)
 }
 CoordMode, Mouse, Client
 MouseMove, posX, posY
