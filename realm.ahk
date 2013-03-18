@@ -60,6 +60,16 @@ ClipSaved = %clipboard%
 clipboard = /server
 goto ek
 
+^d::
+ClipSaved = %clipboard%
+clipboard = /tell mreyeball server
+goto ek
+
+^q::
+Return
+^e::
+Return
+
 F1::
 ClipSaved = %clipboard%
 clipboard = Heal please?

@@ -54,6 +54,8 @@ You can [download the project's files here](https://github.com/Nightfirecat/real
 * Shift+scroll wheel scrolls chat log
 * /tp is converted to /teleport
 * Ctrl+f acts as a fixed interact key for portals and character select
+* Ctrl+1 and Ctrl+2 act as item-swap binds.
+* Ctrl+q and Ctrl+e are disabled to avoid accidental presses.
 
 ##Personal Thanks
 
