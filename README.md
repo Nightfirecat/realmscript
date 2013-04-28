@@ -28,8 +28,10 @@ You can [download the project's files here](https://github.com/Nightfirecat/real
 * `F11` : `/tutorial`
 * `F12` : `/nexustutorial`
 * `/tp ...` : Automatically expands to `/teleport ...`
-* <kbd>ctrl</kbd> + `q` : Double-click inventory slot 1
-* <kbd>ctrl</kbd> + `e` : Double-click inventory slot 2
+* <kbd>ctrl</kbd> + `1` : Double-click inventory slot 1
+* <kbd>ctrl</kbd> + `2` : Double-click inventory slot 2
+* <kbd>ctrl</kbd> + `q` : Disabled to avoid accidental tab or window closure.
+* <kbd>ctrl</kbd> + `e` : Disabled to avoid accidental tab or window closure.
 * <kbd>ctrl</kbd> + `f` : Interact functionality (clicks on `Enter` or `Change` for
   entering a portal or changing characters)
 * <kbd>ctrl</kbd> + `w` : `/who`
