@@ -6,6 +6,10 @@ USE_CUSTOM_CURSOR := 1
 ; name of the .cur file as it appears in /img/cursors/
 CUSTOM_CURSOR := "bmj_precision.cur"
 
+; Custom chat activation key. If you use Enter as your chat activation key, leave this variable empty!
+; See this link for a list of key names: http://www.autohotkey.com/docs/KeyList.htm
+CHAT_ACTIVATION_KEY = 
+
 
 
 ;;;;;;;;;;;;;; DO NOT DELETE!!
@@ -246,10 +250,16 @@ Return
 
 ; sends passed string to the chat using the enter key
 enterChat(message){
+	global CHAT_ACTIVATION_KEY
+	if(CHAT_ACTIVATION_KEY){
+		key = %CHAT_ACTIVATION_KEY%
+	} else {
+		key = Enter
+	}
 	ClipSaved := clipboard
 	clipboard := message
 	Blockinput, on
-	Send {Enter}
+	Send {%key%}
 	Send ^v
 	Send {Enter}
 	Blockinput, off
