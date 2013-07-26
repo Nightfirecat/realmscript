@@ -236,7 +236,7 @@ Return
 
 ; convert /tp to /teleport in the game chat
 :*:/tp::
-	ClipSaved := %clipboard%
+	ClipSaved := clipboard
 	clipboard := "/teleport"
 	Blockinput, on
 	Send ^a
