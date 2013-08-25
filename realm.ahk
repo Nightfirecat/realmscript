@@ -4,11 +4,18 @@
 USE_CUSTOM_CURSOR := 1
 
 ; name of the .cur file as it appears in /img/cursors/
+; Available options:
+;               * bmj_precision.cur
+;               * rotmg_pro_cursor.cur
 CUSTOM_CURSOR := "bmj_precision.cur"
 
-; Custom chat activation key. If you use Enter as your chat activation key, leave this variable empty!
+; Custom activation keys. DO NOT PUT QUOTES AROUND CUSTOM KEYS (eg. use Enter, not "Enter")
+; If you use Enter, Tab, PgUp and PgDn as your default keys for these actions, leave them blank.
 ; See this link for a list of key names: http://www.autohotkey.com/docs/KeyList.htm
 CHAT_ACTIVATION_KEY = 
+TELL_ACTIVATION_KEY = 
+SCROLL_CHAT_UP_KEY = 
+SCROLL_CHAT_DOWN_KEY = 
 
 
 
@@ -20,7 +27,9 @@ goto STARTUP ; DO NOT DELETE!!
 
 ; Create custom binds by using the key combination followed by two colons (::), using the function
 ; enterChat, and passing the string you want as a bind in quotes. Follow this with a line reading
-; only "Return". Below are some binds which you may keep, or use as examples for new binds.
+; only `Return`. Below are some binds which you may use yourself, or use as templates for new binds.
+; If you would like to make your own (custom) hotkeys,
+; more is described here: http://www.autohotkey.com/docs/Hotkeys.htm#Intro
 
 F1::
 	enterChat("Heal please?")
@@ -109,8 +118,13 @@ STARTUP:
 	SetWorkingDir %A_ScriptDir%
 	SetKeyDelay 0
 	SetMouseDelay 0
-	SetTitleMatchMode 3	;match exact titles
+	SetTitleMatchMode 3
 	#include includes/SetSystemCursor.ahk
+	#ClipboardTimeout -1
+	SysGet, menuHeight, 15
+	SysGet, vBorderWidth, 32
+	SysGet, hBorderWidth, 33
+	SysGet, titleHeight, 4
 
 	Suspend On
 	GroupAdd rotmg, Realm of the Mad God
@@ -175,49 +189,30 @@ Return
 ; set a teleport target (input window title and text don't use quotes)
 ^t::InputBox, tptarget, Teleport target, Please enter a person to teleport to:
 
-; teleport to the target set with ctrl+n
+; teleport to the target set with shift+right-click
 +RButton::
 	enterChat("/teleport "+tptarget)
 Return
 
 ; fixed interact with ctrl+f
 ^f::
-	MouseGetPos, mousePosX, mousePosY ;mousePosX/Y have old mouse position
-	WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
-	SysGet, menuHeight, 15
-	SysGet, vBorderWidth, 32
-	SysGet, hBorderWidth, 33
-	SysGet, titleHeight, 4
-	ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\enter-low.png
-	if ErrorLevel{
-		ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\change-low.png
-		if ErrorLevel{
-			ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\enter-high.png
-			if ErrorLevel{
-				ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\change-high.png
-				if ErrorLevel{
-					ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\enter-med.png
-					if ErrorLevel{
-						ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\change-med.png
-						if ErrorLevel{
-							; screen is stretched
-							stretched := true
-						}
-					}
-				}
-			}
-		}
+	MouseGetPos, mousePosX, mousePosY
+	WinGetPos, , , winSizeX, winSizeY, A
+	global menuHeight
+	global vBorderWidth
+	global hBorderWidth
+	global titleHeight
+	stretched := false
+	if(!imageQualitySearch("enter", imageLocX, imageLocY)){
+		stretched := !imageQualitySearch("change", imageLocX, imageLocY)
 	}
 	if(stretched){
-		posX := 698
-		posY := 575
-		multiplierX := ((winSizeX-vBorderWidth)/800)
-		multiplierY := ((winSizeY-(menuHeight+hBorderWidth+titleHeight))/600)
-		posX *= multiplierX
-		posY *= multiplierY
+		intendedX := 698
+		intendedY := 575
+		stretchedWindowPosition(intendedX, intendedY, stretchedX, stretchedY)
+		windowPosToClientPos(stretchedX, stretchedY, posX, posY)
 	} else {
-		posX := imageLocX + 35 - vBorderWidth
-		posY := imageLocY + 14 - (menuHeight+hBorderWidth+titleHeight)
+		windowPosToClientPos(imageLocX, imageLocY, posX, posY)
 	}
 	BlockInput, on
 	CoordMode, Mouse, Client
@@ -231,8 +226,24 @@ Return
 Return
 
 ; scroll the chat log with the default in game keybinds
-+WheelUp::Send {PgUp}
-+WheelDown::Send {PgDn}
++WheelUp::
+	global SCROLL_CHAT_UP_KEY
+	if(SCROLL_CHAT_UP_KEY){
+		key = %SCROLL_CHAT_UP_KEY%
+	}else{
+		key = PgUp
+	}
+	Send {%key%}
+Return
++WheelDown::
+	global SCROLL_CHAT_DOWN_KEY
+	if(SCROLL_CHAT_UP_KEY){
+		key = %SCROLL_CHAT_UP_KEY%
+	}else{
+		key = PgDn
+	}
+	Send {%key%}
+Return
 
 ; convert /tp to /teleport in the game chat
 :*:/tp::
@@ -270,10 +281,16 @@ enterChat(message){
 
 ; sends passed string to the chat using the tab key
 tabChat(message){
+	global TELL_ACTIVATION_KEY
+	if(TELL_ACTIVATION_KEY){
+		key = %TELL_ACTIVATION_KEY%
+	} else {
+		key = Tab
+	}
 	ClipSaved := clipboard
 	clipboard := message
 	Blockinput, on
-	Send {Tab}
+	Send {%key%}
 	Send ^v
 	Send {Enter}
 	Blockinput, off
@@ -282,60 +299,27 @@ tabChat(message){
 	ClipSaved := "" ;save memory
 }
 
-; item swap function [inventory squares are 44px wide]
+; item swap function
 ; move the mouse to the correct slot, double-click, and move it back
 invSwap(slot){
 	MouseGetPos, mousePosX, mousePosY ;mousePosX/Y have old mouse position
 	WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
 	WinGet, winProcessName, ProcessName, A
-	SysGet, menuHeight, 15
-	SysGet, vBorderWidth, 32
-	SysGet, hBorderWidth, 33
-	SysGet, titleHeight, 4
-	stretched:=false
-	ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\inv-low.png
-	if ErrorLevel {
-		ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\inv-high.png
-		if ErrorLevel {
-			ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\inv-med.png
-			if ErrorLevel {
-				; screen is stretched
-				stretched:=true
-			}
-		}
-	}
+	global menuHeight
+	global vBorderWidth
+	global hBorderWidth
+	global titleHeight
 	; move the mouse to the correct slot, double-click (using events), and move it back
-	if(stretched){
-		yMultiplierSubtract := (winProcessName=="Realm of the Mad God.exe")?(hBorderWidth+titleHeight):(menuHeight+hBorderWidth+titleHeight)
-		posX := 634 + Mod((44 * (slot-1)), (4*44))
-		posY := 400 + (44 * ((slot-1)//(4)))
-		multiplierX := ((winSizeX-vBorderWidth)/800)
-		multiplierY := ((winSizeY-yMultiplierSubtract)/600)
-		posX *= multiplierX
-		posY *= multiplierY
-	} else { ;not stretched
-		WinGetTitle, winTitle, A
-		WinGet, winMax, MinMax, A
-		;chrome (not maximized)
-		if(winTitle=="Realm of the Mad God - Google Chrome"&&winMax==0){
-			posX := imageLocX + 27 + Mod((44 * (slot-1)), (4*44))
-			posY := imageLocY + 46 + (44 * ((slot-1)//(4)))
-		;opera, ff
-		} else if(winTitle=="Realm of the Mad God - Opera"||winTitle=="Realm of the Mad God - Mozilla Firefox"||winTitle=="Realm of the Mad God - Mozilla Firefox (Private Browsing)") {
-			posX := imageLocX + 27 + Mod((44 * (slot-1)), (4*44)) - vBorderWidth
-			posY := imageLocY + 46 + (44 * ((slot-1)//(4)))
-		;IE, safari, steam
-		} else if(winTitle=="Realm of the Mad God - Windows Internet Explorer"||winProcessName=="Safari.exe"||winProcessName=="Realm of the Mad God.exe"){
-			posX := imageLocX + 27 + Mod((44 * (slot-1)), (4*44)) - vBorderWidth
-			posY := imageLocY + 46 + (44 * ((slot-1)//(4))) - (hBorderWidth+titleHeight)
-		;chrome (when maximized)
-		} else if(winTitle=="Realm of the Mad God - Google Chrome"&&winMax==1){
-			posX := imageLocX + 27 + Mod((44 * (slot-1)), (4*44)) - vBorderWidth
-			posY := imageLocY + 46 + (44 * ((slot-1)//(4))) - hBorderWidth
-		} else { ;projector
-			posX := imageLocX + 27 + Mod((44 * (slot-1)), (4*44)) - vBorderWidth
-			posY := imageLocY + 46 + (44 * ((slot-1)//(4))) - (menuHeight+hBorderWidth+titleHeight)
-		}
+	if(!imageQualitySearch("inv", imageLocX, imageLocY)){	;if the image search fails (stretched screen)
+		;determine if the window is a steam or projector window, and adjust the value accordingly
+		intendedX := 634 + Mod((44 * (slot-1)), (4*44))
+		intendedY := 400 + (44 * ((slot-1)//(4)))
+		stretchedWindowPosition(intendedX, intendedY, stretchedX, stretchedY)	;stretchedX and stretchedY are set by the function call
+		windowPosToClientPos(stretchedX, stretchedY, posX, posY)	;posX and posY are set by the function call
+	} else { ;not stretched, imageLocX/Y are set
+		slotX := imageLocX + 27 + Mod((44 * (slot-1)), (4*44))
+		slotY := imageLocY + 46 + (44 * ((slot-1)//(4)))
+		windowPosToClientPos(slotX, slotY, posX, posY)	;posX and posY are set by the function call
 	}
 	BlockInput, on
 	CoordMode, Mouse, Client
@@ -349,6 +333,80 @@ invSwap(slot){
 	MouseMove, mousePosX, mousePosY
 	BlockInput, off
 	stretched := false
+}
+
+; @param imageName:	base file name (<name>-[low|high|med].png); must be located in the img\ directory
+; @param imageLocX:	by-reference variable to be set to the window-related x position of the upper-left corner of the image
+; @param imageLocY:	by-reference variable to be set to the window-related y position of the upper-left corner of the image
+; @return:			returns true if the search succeeds; false otherwise
+; @notes:			If the image search fails (and the function returns false), imageLocX and imageLocY will not be set.
+imageQualitySearch(imageName, byref imageLocX, byref imageLocY){
+	WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
+	ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\%imageName%-low.png
+	if ErrorLevel {
+		ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\%imageName%-high.png
+		if ErrorLevel {
+			ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\%imageName%-med.png
+			if ErrorLevel {
+				; stretched screen or image not found
+				return false
+			}
+		}
+	}
+	return true
+}
+
+; @param intendedX:	what would otherwise be the correct x location in a non-stretched client
+; @param intendedY:	what would otherwise be the correct y location in a non-stretched client
+; @param actualX:	by-reference variable to be set to the window-related x position of the new x position
+; @param actualY:	by-reference variable to be set to the window-related x position of the new y position
+stretchedWindowPosition(intendedX, intendedY, byref actualX, byref actualY){
+	WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
+	WinGet, winProcessName, ProcessName, A
+	global menuHeight
+	global vBorderWidth
+	global hBorderWidth
+	global titleHeight
+	yMultiplierSubtract := (winProcessName=="Realm of the Mad God.exe")?((hBorderWidth*2)+titleHeight):(menuHeight+(hBorderWidth*2)+titleHeight)
+	multiplierX := ((winSizeX-(vBorderWidth*2))/800)
+	multiplierY := ((winSizeY-yMultiplierSubtract)/600)
+	actualX := (intendedX * multiplierX) + (vBorderWidth*2)
+	actualY := (intendedY * multiplierY) + (yMultiplierSubtract)
+}
+
+; @param windowX:	x position of a window-related coordinate
+; @param windowY:	y position of a window-related coordinate
+; @param outputX:	by-reference variable to be set to a client-related x coordinate
+; @param outputY:	by-reference variable to be set to a client-related y coordinate
+windowPosToClientPos(windowX, windowY, byref outputX, byref outputY){
+	WinGetTitle, winTitle, A
+	WinGet, winProcessName, ProcessName, A
+	WinGet, winMax, MinMax, A
+	global menuHeight
+	global vBorderWidth
+	global hBorderWidth
+	global titleHeight
+	
+	;chrome (not maximized)
+	if(winTitle=="Realm of the Mad God - Google Chrome"&&winMax==0){
+		outputX := windowX
+		outputY := windowY
+	;opera, ff
+	} else if(winTitle=="Realm of the Mad God - Opera"||winTitle=="Realm of the Mad God - Mozilla Firefox"||winTitle=="Realm of the Mad God - Mozilla Firefox (Private Browsing)") {
+		outputX := windowX - vBorderWidth
+		outputY := windowY
+	;IE, safari, steam
+	} else if(winTitle=="Realm of the Mad God - Windows Internet Explorer"||winProcessName=="Safari.exe"||winProcessName=="Realm of the Mad God.exe"){
+		outputX := windowX - vBorderWidth
+		outputY := windowY - (hBorderWidth+titleHeight)
+	;chrome (when maximized)
+	} else if(winTitle=="Realm of the Mad God - Google Chrome"&&winMax==1){
+		outputX := windowX - vBorderWidth
+		outputY := windowY - hBorderWidth
+	} else { ;projector
+		outputX := windowX - vBorderWidth
+		outputY := windowY - (menuHeight+hBorderWidth+titleHeight)
+	}
 }
 
 ExitSub:
