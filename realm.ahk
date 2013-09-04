@@ -247,7 +247,7 @@ Return
 
 ; convert /tp to /teleport in the game chat
 :*:/tp::
-	ClipSaved := clipboard
+	ClipSaved := ClipboardAll
 	clipboard := "/teleport"
 	Blockinput, on
 	Send ^a
@@ -267,7 +267,7 @@ enterChat(message){
 	} else {
 		key = Enter
 	}
-	ClipSaved := clipboard
+	ClipSaved := ClipboardAll
 	clipboard := message
 	Blockinput, on
 	Send {%key%}
@@ -287,7 +287,7 @@ tabChat(message){
 	} else {
 		key = Tab
 	}
-	ClipSaved := clipboard
+	ClipSaved := ClipboardAll
 	clipboard := message
 	Blockinput, on
 	Send {%key%}
