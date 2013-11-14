@@ -13,10 +13,9 @@ You can [download the project's files here](https://github.com/Nightfirecat/real
 * Extract the archive to a folder of your choice.
 * Install [Autohotkey](http://www.autohotkey.com/) for Windows or [IronAHK](http://www.ironahk.net/)
   for OSX or Linux
-* Open `realmscript.ahk` using your preferred text editor. **(Windows users, do not use Notepad; use
-  [Notepad++](http://notepadplusplus.org/) or some other editor!)**
-* Edit, add, or delete binds as needed in the top section of the code, as directed by the comments -
-  the text that appears after semicolons. (`;`)
+* Open `options.ahk` and `hotkeys.ahk` using your preferred text editor.
+  **(Windows users, do not use Notepad; use [Notepad++](http://notepadplusplus.org/) or some other editor!)**
+* Choose your default settings in `options.ahk` and edit, add, or delete binds as needed in `hotkeys.ahk`.
 
 ##Default Binds
 
@@ -55,6 +54,7 @@ You can [download the project's files here](https://github.com/Nightfirecat/real
 * Swap hotkeys (allows for slot selecting via bind editing)
 * Shift+scroll wheel scrolls chat log
 * /tp is converted to /teleport
+* Resizable borders can be disabled for projector or Steam client players
 * Ctrl+f acts as a fixed interact key for portals and character select
 * Ctrl+1 and Ctrl+2 act as item-swap binds.
 * Ctrl+q and Ctrl+e are disabled to avoid accidental presses.

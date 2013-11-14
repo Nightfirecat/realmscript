@@ -1,113 +1,12 @@
-;;; Use the top section to set custom binds, custom cursors, etc.
-
-; Set to 1 if you want to use a custom .cur file when the window is active, 0 otherwise
-USE_CUSTOM_CURSOR := 1
-
-; name of the .cur file as it appears in /img/cursors/
-; Available options:
-;               * bmj_precision.cur
-;               * rotmg_pro_cursor.cur
-CUSTOM_CURSOR := "bmj_precision.cur"
-
-; Custom activation keys. DO NOT PUT QUOTES AROUND CUSTOM KEYS (eg. use Enter, not "Enter")
-; If you use Enter, Tab, PgUp and PgDn as your default keys for these actions, leave them blank.
-; See this link for a list of key names: http://www.autohotkey.com/docs/KeyList.htm
-CHAT_ACTIVATION_KEY = 
-TELL_ACTIVATION_KEY = 
-SCROLL_CHAT_UP_KEY = 
-SCROLL_CHAT_DOWN_KEY = 
-
-
+;;;;; global vars
+#include options.ahk
 
 ;;;;;;;;;;;;;; DO NOT DELETE!!
 goto STARTUP ; DO NOT DELETE!!
 ;;;;;;;;;;;;;; DO NOT DELETE!!
 
-
-
-; Create custom binds by using the key combination followed by two colons (::), using the function
-; enterChat, and passing the string you want as a bind in quotes. Follow this with a line reading
-; only `Return`. Below are some binds which you may use yourself, or use as templates for new binds.
-; If you would like to make your own (custom) hotkeys,
-; more is described here: http://www.autohotkey.com/docs/Hotkeys.htm#Intro
-
-F1::
-	enterChat("Heal please?")
-Return
-
-F2::
-	enterChat("Thank you. :)")
-Return
-
-F3::
-	enterChat("MP please!")
-Return
-
-F4::
-	enterChat("He lives and reigns and conquers the world")
-Return
-
-F11::
-	enterChat("/tutorial")
-Return
-
-F12::
-	enterChat("/nexustutorial")
-Return
-
-
-
-; Here are some other 'default' binds which you can leave as-is, delete, or change, if you wish.
-
-`:: ;(backtick)
-	enterChat("/pause")
-Return
-
-^w::
-	enterChat("/who")
-Return
-
-^s::
-	enterChat("/server")
-Return
-
-^d::
-	enterChat("/tell mreyeball server")
-Return
-
-; close script
-^F8:: ExitApp
-
-
-
-; The following binds double-click on an inventory space to swap items/abilities/armors/rings.
-; Add or remove them as you see fit.
-
-^1::
-	invSwap(1)	;;;;; CHANGE TO YOUR WEAPON SWAP INVENTORY SLOT
-Return
-
-^2::
-	invSwap(2)	;;;;; CHANGE TO YOUR ABILITY SWAP INVENTORY SLOT
-Return
-
-
-
-; The following are in place to prevent accidental closure of a window or tab because of nearby binds.
-^q::
-Return
-^e::
-Return
-
-
-
-
-
-
-
-
-
-
+;;;;; hotkeys
+#include hotkeys.ahk
 
 
 STARTUP:
@@ -151,8 +50,13 @@ STARTUP:
 Return
 
 WinActive(){
+	WinGetTitle, winTitle, A
+	WinGet, winProcessName, ProcessName, A
 	global USE_CUSTOM_CURSOR, CUSTOM_CURSOR
 	Suspend Off
+	if(DISABLE_RESIZE&&(winTitle=="Adobe Flash Player 11"||winTitle=="Adobe Flash Player 10"||winProcessName=="Realm of the Mad God.exe")){
+		WinSet, Style, -0x40000, ahk_group rotmg	;disable resize borders
+	}
 	if(USE_CUSTOM_CURSOR){
 		SetSystemCursor("img/cursors/"+CUSTOM_CURSOR,0,0)
 	}
@@ -174,77 +78,6 @@ WinNotActive(){
 	}
 }
 
-RButton::
-	Send +{LButton}
-	GetKeyState, LB, LButton, P
-	if (LB == "D"){
-		Send {LButton down}
-	}
-Return
-
-^+RButton::
-	Click Right
-Return
-
-; set a teleport target (input window title and text don't use quotes)
-^t::InputBox, tptarget, Teleport target, Please enter a person to teleport to:
-
-; teleport to the target set with shift+right-click
-+RButton::
-	enterChat("/teleport "+tptarget)
-Return
-
-; fixed interact with ctrl+f
-^f::
-	MouseGetPos, mousePosX, mousePosY
-	WinGetPos, , , winSizeX, winSizeY, A
-	global menuHeight
-	global vBorderWidth
-	global hBorderWidth
-	global titleHeight
-	stretched := false
-	if(!imageQualitySearch("enter", imageLocX, imageLocY)){
-		stretched := !imageQualitySearch("change", imageLocX, imageLocY)
-	}
-	if(stretched){
-		intendedX := 698
-		intendedY := 575
-		stretchedWindowPosition(intendedX, intendedY, stretchedX, stretchedY)
-		windowPosToClientPos(stretchedX, stretchedY, posX, posY)
-	} else {
-		windowPosToClientPos(imageLocX, imageLocY, posX, posY)
-	}
-	BlockInput, on
-	CoordMode, Mouse, Client
-	MouseMove, posX, posY
-	SendEvent {LButton Down}
-	SendEvent {LButton Up}
-	CoordMode, Mouse, Window
-	MouseMove, mousePosX, mousePosY
-	BlockInput, off
-	stretched := false
-Return
-
-; scroll the chat log with the default in game keybinds
-+WheelUp::
-	global SCROLL_CHAT_UP_KEY
-	if(SCROLL_CHAT_UP_KEY){
-		key = %SCROLL_CHAT_UP_KEY%
-	}else{
-		key = PgUp
-	}
-	Send {%key%}
-Return
-+WheelDown::
-	global SCROLL_CHAT_DOWN_KEY
-	if(SCROLL_CHAT_UP_KEY){
-		key = %SCROLL_CHAT_UP_KEY%
-	}else{
-		key = PgDn
-	}
-	Send {%key%}
-Return
-
 ; convert /tp to /teleport in the game chat
 :*:/tp::
 	ClipSaved := ClipboardAll
@@ -259,35 +92,24 @@ Return
 	ClipSaved := "" ;save memory
 Return
 
-; sends passed string to the chat using the enter key
-enterChat(message){
-	global CHAT_ACTIVATION_KEY
-	if(CHAT_ACTIVATION_KEY){
-		key = %CHAT_ACTIVATION_KEY%
-	} else {
+; sends passed string to the chat using the specified mode
+sendChat(message, mode="public"){
+	global
+	local activation_key, key
+	if(mode=="public"){
+		activation_key = %CHAT_ACTIVATION_KEY%
 		key = Enter
-	}
-	ClipSaved := ClipboardAll
-	clipboard := message
-	Blockinput, on
-	Send {%key%}
-	Send ^v
-	Send {Enter}
-	Blockinput, off
-	Sleep 100
-	clipboard := ClipSaved
-	ClipSaved := "" ;save memory
-}
-
-; sends passed string to the chat using the tab key
-tabChat(message){
-	global TELL_ACTIVATION_KEY
-	if(TELL_ACTIVATION_KEY){
-		key = %TELL_ACTIVATION_KEY%
-	} else {
+	} else if(mode=="guild") {
+		activation_key = %GUILD_ACTIVATION_KEY%
+		key = g
+	} else { ;mode=="tell"
+		activation_key = %TELL_ACTIVATION_KEY%
 		key = Tab
 	}
-	ClipSaved := ClipboardAll
+	if(activation_key){
+		key = %activation_key%
+	}
+	local ClipSaved := ClipboardAll
 	clipboard := message
 	Blockinput, on
 	Send {%key%}
@@ -305,6 +127,7 @@ invSwap(slot){
 	MouseGetPos, mousePosX, mousePosY ;mousePosX/Y have old mouse position
 	WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
 	WinGet, winProcessName, ProcessName, A
+	GetKeyState, LB, LButton, P
 	global menuHeight
 	global vBorderWidth
 	global hBorderWidth
@@ -331,6 +154,9 @@ invSwap(slot){
 	SendEvent {LButton Up}
 	CoordMode, Mouse, Window
 	MouseMove, mousePosX, mousePosY
+	if (LB == "D"){
+		Send {LButton down}
+	}
 	BlockInput, off
 	stretched := false
 }
