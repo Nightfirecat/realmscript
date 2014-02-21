@@ -46,6 +46,7 @@ STARTUP:
 	GroupAdd rotmg, Play Realm of the Mad God, a free online game on Kongregate - Windows Internet Explorer
 	GroupAdd rotmg, Adobe Flash Player 10
 	GroupAdd rotmg, Adobe Flash Player 11
+	GroupAdd rotmg, Adobe Flash Player 12
 	WinNotActive()
 Return
 
