@@ -6,7 +6,7 @@ with hotkeys for useful text and click macros.
 
 ##Download
 
-You can [download the project's files here](https://github.com/Nightfirecat/realmscript/archive/master.zip).
+You can [download the project's files here](https://github.com/Nightfirecat/realmscript/zipball/master).
 
 ##Directions for Use
 
