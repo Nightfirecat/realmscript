@@ -11,9 +11,8 @@ You can [download the project's files here](https://github.com/Nightfirecat/real
 ##Directions for Use
 
 * Extract the archive to a folder of your choice.
-* Install [Autohotkey](http://www.autohotkey.com/) for Windows or [IronAHK](http://www.ironahk.net/)
-  for OSX or Linux
-* Open `options.ahk` and `hotkeys.ahk` using your preferred text editor.
+* Install [Autohotkey](http://ahkscript.org/) for Windows
+* Open `options.ahk` and `hotkeys.ahk` using your preferred text editor.  
   **(Windows users, do not use Notepad; use [Notepad++](http://notepadplusplus.org/) or some other editor!)**
 * Choose your default settings in `options.ahk` and edit, add, or delete binds as needed in `hotkeys.ahk`.
 
