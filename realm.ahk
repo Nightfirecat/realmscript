@@ -48,6 +48,7 @@ STARTUP:
 	GroupAdd rotmg, Adobe Flash Player 11
 	GroupAdd rotmg, Adobe Flash Player 12
 	GroupAdd rotmg, Adobe Flash Player 13
+	GroupAdd rotmg, Adobe Flash Player 14
 	WinNotActive()
 Return
 
