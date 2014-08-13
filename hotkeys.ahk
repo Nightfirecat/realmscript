@@ -2,7 +2,7 @@
 ; sendChat, and passing the string you want as a bind in quotes. Follow this with a line reading
 ; only `Return`. Below are some binds which you may use yourself, or use as templates for new binds.
 ; If you would like to make your own (custom) hotkeys,
-; more is described here: http://www.autohotkey.com/docs/Hotkeys.htm#Intro
+; more is described here: http://ahkscript.org/docs/Hotkeys.htm#Intro
 
 F1::
 	sendChat("Heal please?")
