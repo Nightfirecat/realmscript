@@ -63,7 +63,7 @@ WinActive(){
 	WinGet, winProcessName, ProcessName, A
 	global USE_CUSTOM_CURSOR, CUSTOM_CURSOR
 	Suspend Off
-	if(DISABLE_RESIZE&&(winTitle=="Adobe Flash Player 11"||winTitle=="Adobe Flash Player 10"||winProcessName=="Realm of the Mad God.exe")){
+	if(DISABLE_RESIZE&&(InStr(winTitle, "Adobe Flash Player")||winProcessName=="Realm of the Mad God.exe")){
 		WinSet, Style, -0x40000, ahk_group rotmg	;disable resize borders
 	}
 	if(USE_CUSTOM_CURSOR){
