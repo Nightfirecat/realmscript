@@ -10,16 +10,24 @@ goto STARTUP ; DO NOT DELETE!!
 
 
 STARTUP:
+	; check AHK version, exit if <1.1 (if not at least AHK_L)
+	if (A_AhkVersion < 1.1) {
+		MsgBox, Your version of AutoHotKey is not sufficient to correctly run realmscript!`nPlease download and install the latest version from http://ahkscript.org/.
+		Run, http://ahkscript.org/
+		ExitApp
+	}
+
+	; set script directives, global settings, global vars
 	OnExit, ExitSub
+	#include includes/SetSystemCursor.ahk
 	#NoEnv
 	#SingleInstance force
-	SendMode Input
+	#ClipboardTimeout -1
 	SetWorkingDir %A_ScriptDir%
+	SendMode Input
 	SetKeyDelay 0
 	SetMouseDelay 0
 	SetTitleMatchMode 3
-	#include includes/SetSystemCursor.ahk
-	#ClipboardTimeout -1
 	SysGet, menuHeight, 15
 	SysGet, vBorderWidth, 32
 	SysGet, hBorderWidth, 33
