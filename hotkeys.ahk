@@ -139,8 +139,8 @@ Return
 Return
 +WheelDown::
 	global SCROLL_CHAT_DOWN_KEY
-	if (SCROLL_CHAT_UP_KEY) {
-		key = %SCROLL_CHAT_UP_KEY%
+	if (SCROLL_CHAT_DOWN_KEY) {
+		key = %SCROLL_CHAT_DOWN_KEY%
 	} else {
 		key = PgDn
 	}
