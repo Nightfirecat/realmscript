@@ -76,6 +76,8 @@ Return
 
 ; Finally, here are some more core binds - adjust at your own risk~
 
+
+; right-click -> shift+click, ctrl+right-click -> right-click
 RButton::
 	Send +{LButton}
 	GetKeyState, LB, LButton, P
@@ -83,13 +85,14 @@ RButton::
 		Send {LButton down}
 	}
 Return
-
 ^RButton::
 	Click Right
 Return
 
 ; set a teleport target (input window title and text don't use quotes)
-^t::InputBox, tptarget, Teleport target, Please enter a person to teleport to:
+^t::
+	tpTarget()
+Return
 
 ; teleport to the target set with shift+right-click
 +RButton::
@@ -98,51 +101,13 @@ Return
 
 ; fixed interact with ctrl+f
 ^f::
-	MouseGetPos, mousePosX, mousePosY
-	WinGetPos, , , winSizeX, winSizeY, A
-	global menuHeight
-	global vBorderWidth
-	global hBorderWidth
-	global titleHeight
-	stretched := false
-	if (!imageQualitySearch("enter", imageLocX, imageLocY)) {
-		stretched := !imageQualitySearch("change", imageLocX, imageLocY)
-	}
-	if (stretched) {
-		intendedX := 698
-		intendedY := 575
-		stretchedWindowPosition(intendedX, intendedY, stretchedX, stretchedY)
-		windowPosToClientPos(stretchedX, stretchedY, posX, posY)
-	} else {
-		windowPosToClientPos(imageLocX, imageLocY, posX, posY)
-	}
-	BlockInput, on
-	CoordMode, Mouse, Client
-	MouseMove, posX, posY
-	SendEvent {LButton Down}
-	SendEvent {LButton Up}
-	CoordMode, Mouse, Window
-	MouseMove, mousePosX, mousePosY
-	BlockInput, off
-	stretched := false
+	interact()
 Return
 
-; scroll the chat log with the default in game keybinds
+; shift+scroll through the chat log with the in-game keybinds
 +WheelUp::
-	global SCROLL_CHAT_UP_KEY
-	if (SCROLL_CHAT_UP_KEY) {
-		key = %SCROLL_CHAT_UP_KEY%
-	} else {
-		key = PgUp
-	}
-	Send {%key%}
+	scrollChat("up")
 Return
 +WheelDown::
-	global SCROLL_CHAT_DOWN_KEY
-	if (SCROLL_CHAT_DOWN_KEY) {
-		key = %SCROLL_CHAT_DOWN_KEY%
-	} else {
-		key = PgDn
-	}
-	Send {%key%}
+	scrollChat("down")
 Return

@@ -151,6 +151,61 @@ sendChat(message, mode="public") {
 	ClipSaved := "" ;save memory
 }
 
+tpTarget() {
+	global tptarget
+	InputBox, tptarget, Teleport target, Please enter a person to teleport to:
+}
+
+scrollChat(direction:="up") {
+	global SCROLL_CHAT_UP_KEY
+	global SCROLL_CHAT_DOWN_KEY
+	if (direction == "up") {
+		if (SCROLL_CHAT_UP_KEY) {
+			key = %SCROLL_CHAT_UP_KEY%
+		} else {
+			key = PgUp
+		}
+	} else if (direction == "down") {
+		if (SCROLL_CHAT_DOWN_KEY) {
+			key = %SCROLL_CHAT_DOWN_KEY%
+		} else {
+			key = PgDn
+		}
+	}
+	Send {%key%}
+}
+
+; interact key replacement
+interact() {
+	MouseGetPos, mousePosX, mousePosY
+	WinGetPos, , , winSizeX, winSizeY, A
+	global menuHeight
+	global vBorderWidth
+	global hBorderWidth
+	global titleHeight
+	stretched := false
+	if (!imageQualitySearch("enter", imageLocX, imageLocY)) {
+		stretched := !imageQualitySearch("change", imageLocX, imageLocY)
+	}
+	if (stretched) {
+		intendedX := 698
+		intendedY := 575
+		stretchedWindowPosition(intendedX, intendedY, stretchedX, stretchedY)
+		windowPosToClientPos(stretchedX, stretchedY, posX, posY)
+	} else {
+		windowPosToClientPos(imageLocX, imageLocY, posX, posY)
+	}
+	BlockInput, on
+	CoordMode, Mouse, Client
+	MouseMove, posX, posY
+	SendEvent {LButton Down}
+	SendEvent {LButton Up}
+	CoordMode, Mouse, Window
+	MouseMove, mousePosX, mousePosY
+	BlockInput, off
+	stretched := false
+}
+
 ; item swap function
 ; move the mouse to the correct slot, double-click, and move it back
 invSwap(slot) {
