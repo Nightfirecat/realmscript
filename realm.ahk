@@ -12,7 +12,10 @@ goto STARTUP ; DO NOT DELETE!!
 STARTUP:
 	; check AHK version, exit if <1.1 (if not at least AHK_L)
 	if (A_AhkVersion < 1.1) {
-		MsgBox, Your version of AutoHotKey is not sufficient to correctly run realmscript!`nPlease download and install the latest version from http://ahkscript.org/.
+		MsgBox, 16, You must update AHK!, % "Your version of AutoHotKey is not "
+			. "sufficient to correctly run realmscript!`nPlease download and "
+			. "install the latest version from http://ahkscript.org/ and run "
+			. "realmscript again."
 		Run, http://ahkscript.org/
 		ExitApp
 	}
@@ -34,35 +37,43 @@ STARTUP:
 	SysGet, titleHeight, 4
 
 	Suspend On
-	GroupAdd rotmg, Realm of the Mad God
-	GroupAdd rotmg, Realm of the Mad God - Mozilla Firefox
-	GroupAdd rotmg, Realm of the Mad God - Mozilla Firefox (Private Browsing)
-	GroupAdd rotmg, Realm of the Mad God - Google Chrome
-	GroupAdd rotmg, Realm of the Mad God - Opera
-	GroupAdd rotmg, Realm of the Mad God - Windows Internet Explorer
-	GroupAdd rotmg, Realm of the Mad God | Kabam
-	GroupAdd rotmg, Realm of the Mad God | Kabam - Mozilla Firefox
-	GroupAdd rotmg, Realm of the Mad God | Kabam - Mozilla Firefox (Private Browsing)
-	GroupAdd rotmg, Realm of the Mad God | Kabam - Google Chrome
-	GroupAdd rotmg, Realm of the Mad God | Kabam - Opera
-	GroupAdd rotmg, Realm of the Mad God | Kabam - Windows Internet Explorer
-	GroupAdd rotmg, Play Realm of the Mad God, a free online game on Kongregate
-	GroupAdd rotmg, Play Realm of the Mad God, a free online game on Kongregate - Mozilla Firefox
-	GroupAdd rotmg, Play Realm of the Mad God, a free online game on Kongregate - Mozilla Firefox (Private Browsing)
-	GroupAdd rotmg, Play Realm of the Mad God, a free online game on Kongregate - Google Chrome
-	GroupAdd rotmg, Play Realm of the Mad God, a free online game on Kongregate - Opera
-	GroupAdd rotmg, Play Realm of the Mad God, a free online game on Kongregate - Windows Internet Explorer
-	GroupAdd rotmg, Adobe Flash Player 10
-	GroupAdd rotmg, Adobe Flash Player 11
-	GroupAdd rotmg, Adobe Flash Player 12
-	GroupAdd rotmg, Adobe Flash Player 13
-	GroupAdd rotmg, Adobe Flash Player 14
-	GroupAdd rotmg, Adobe Flash Player 15
-	GroupAdd rotmg, Adobe Flash Player 16
-	GroupAdd rotmg, Adobe Flash Player 17
-	GroupAdd rotmg, Adobe Flash Player 18
-	GroupAdd rotmg, Adobe Flash Player 19
-	GroupAdd rotmg, Adobe Flash Player 20
+	GroupAdd rotmg, % "Realm of the Mad God"
+	GroupAdd rotmg, % "Realm of the Mad God - Mozilla Firefox"
+	GroupAdd rotmg, % "Realm of the Mad God - Mozilla Firefox "
+					. "(Private Browsing)"
+	GroupAdd rotmg, % "Realm of the Mad God - Google Chrome"
+	GroupAdd rotmg, % "Realm of the Mad God - Opera"
+	GroupAdd rotmg, % "Realm of the Mad God - Windows Internet Explorer"
+	GroupAdd rotmg, % "Realm of the Mad God | Kabam"
+	GroupAdd rotmg, % "Realm of the Mad God | Kabam - Mozilla Firefox"
+	GroupAdd rotmg, % "Realm of the Mad God | Kabam - Mozilla Firefox "
+					. "(Private Browsing)"
+	GroupAdd rotmg, % "Realm of the Mad God | Kabam - Google Chrome"
+	GroupAdd rotmg, % "Realm of the Mad God | Kabam - Opera"
+	GroupAdd rotmg, % "Realm of the Mad God | Kabam - Windows Internet Explorer"
+	GroupAdd rotmg, % "Play Realm of the Mad God, a free online game on "
+					. "Kongregate"
+	GroupAdd rotmg, % "Play Realm of the Mad God, a free online game on "
+					. "Kongregate - Mozilla Firefox"
+	GroupAdd rotmg, % "Play Realm of the Mad God, a free online game on "
+					. "Kongregate - Mozilla Firefox (Private Browsing)"
+	GroupAdd rotmg, % "Play Realm of the Mad God, a free online game on "
+					. "Kongregate - Google Chrome"
+	GroupAdd rotmg, % "Play Realm of the Mad God, a free online game on "
+					. "Kongregate - Opera"
+	GroupAdd rotmg, % "Play Realm of the Mad God, a free online game on "
+					. "Kongregate - Windows Internet Explorer"
+	GroupAdd rotmg, % "Adobe Flash Player 10"
+	GroupAdd rotmg, % "Adobe Flash Player 11"
+	GroupAdd rotmg, % "Adobe Flash Player 12"
+	GroupAdd rotmg, % "Adobe Flash Player 13"
+	GroupAdd rotmg, % "Adobe Flash Player 14"
+	GroupAdd rotmg, % "Adobe Flash Player 15"
+	GroupAdd rotmg, % "Adobe Flash Player 16"
+	GroupAdd rotmg, % "Adobe Flash Player 17"
+	GroupAdd rotmg, % "Adobe Flash Player 18"
+	GroupAdd rotmg, % "Adobe Flash Player 19"
+	GroupAdd rotmg, % "Adobe Flash Player 20"
 	WinNotActive()
 Return
 
@@ -71,7 +82,9 @@ WinActive(){
 	WinGet, winProcessName, ProcessName, A
 	global USE_CUSTOM_CURSOR, CUSTOM_CURSOR
 	Suspend Off
-	if(DISABLE_RESIZE&&(InStr(winTitle, "Adobe Flash Player")||winProcessName=="Realm of the Mad God.exe")){
+	if(DISABLE_RESIZE
+	&& (InStr(winTitle, "Adobe Flash Player")
+	|| winProcessName=="Realm of the Mad God.exe")){
 		WinSet, Style, -0x40000, ahk_group rotmg	;disable resize borders
 	}
 	if(USE_CUSTOM_CURSOR){
@@ -149,17 +162,26 @@ invSwap(slot){
 	global vBorderWidth
 	global hBorderWidth
 	global titleHeight
-	; move the mouse to the correct slot, double-click (using events), and move it back
-	if(!imageQualitySearch("inv", imageLocX, imageLocY)){	;if the image search fails (stretched screen)
-		;determine if the window is a steam or projector window, and adjust the value accordingly
+	; move the mouse to the correct slot, double-click (using events),
+	; then move it back
+	if(!imageQualitySearch("inv", imageLocX, imageLocY)){
+		;the image search failed (stretched screen)
+		;determine if the window is a steam or projector window,
+		;and adjust the value accordingly
 		intendedX := 634 + Mod((44 * (slot-1)), (4*44))
 		intendedY := 400 + (44 * ((slot-1)//(4)))
-		stretchedWindowPosition(intendedX, intendedY, stretchedX, stretchedY)	;stretchedX and stretchedY are set by the function call
-		windowPosToClientPos(stretchedX, stretchedY, posX, posY)	;posX and posY are set by the function call
+
+		;stretchedX and stretchedY are set by the function call
+		stretchedWindowPosition(intendedX, intendedY, stretchedX, stretchedY)
+
+		;posX and posY are set by the function call
+		windowPosToClientPos(stretchedX, stretchedY, posX, posY)
 	} else { ;not stretched, imageLocX/Y are set
 		slotX := imageLocX + 27 + Mod((44 * (slot-1)), (4*44))
 		slotY := imageLocY + 46 + (44 * ((slot-1)//(4)))
-		windowPosToClientPos(slotX, slotY, posX, posY)	;posX and posY are set by the function call
+
+		;posX and posY are set by the function call
+		windowPosToClientPos(slotX, slotY, posX, posY)
 	}
 	BlockInput, on
 	CoordMode, Mouse, Client
@@ -178,18 +200,25 @@ invSwap(slot){
 	stretched := false
 }
 
-; @param imageName:	base file name (<name>-[low|high|med].png); must be located in the img\ directory
-; @param imageLocX:	by-reference variable to be set to the window-related x position of the upper-left corner of the image
-; @param imageLocY:	by-reference variable to be set to the window-related y position of the upper-left corner of the image
+; @param imageName:	base file name (<name>-[low|high|med].png); must be located
+;	in the img\ directory
+; @param imageLocX:	by-reference variable to be set to the window-related x
+;	position of the upper-left corner of the image
+; @param imageLocY:	by-reference variable to be set to the window-related y
+;	position of the upper-left corner of the image
 ; @return:			returns true if the search succeeds; false otherwise
-; @notes:			If the image search fails (and the function returns false), imageLocX and imageLocY will not be set.
+; @notes:			If the image search fails (and the function returns false),
+;	imageLocX and imageLocY will not be set.
 imageQualitySearch(imageName, byref imageLocX, byref imageLocY){
 	WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
-	ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\%imageName%-low.png
+	ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%
+		, img\%imageName%-low.png
 	if ErrorLevel {
-		ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\%imageName%-high.png
+		ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%
+			, img\%imageName%-high.png
 		if ErrorLevel {
-			ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%, img\%imageName%-med.png
+			ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%
+				, img\%imageName%-med.png
 			if ErrorLevel {
 				; stretched screen or image not found
 				return false
@@ -199,10 +228,14 @@ imageQualitySearch(imageName, byref imageLocX, byref imageLocY){
 	return true
 }
 
-; @param intendedX:	what would otherwise be the correct x location in a non-stretched client
-; @param intendedY:	what would otherwise be the correct y location in a non-stretched client
-; @param actualX:	by-reference variable to be set to the window-related x position of the new x position
-; @param actualY:	by-reference variable to be set to the window-related x position of the new y position
+; @param intendedX:	what would otherwise be the correct x location in a
+;	non-stretched client
+; @param intendedY:	what would otherwise be the correct y location in a
+;	non-stretched client
+; @param actualX:	by-reference variable to be set to the window-related x
+;	position of the new x position
+; @param actualY:	by-reference variable to be set to the window-related x
+;	position of the new y position
 stretchedWindowPosition(intendedX, intendedY, byref actualX, byref actualY){
 	WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
 	WinGet, winProcessName, ProcessName, A
@@ -210,7 +243,9 @@ stretchedWindowPosition(intendedX, intendedY, byref actualX, byref actualY){
 	global vBorderWidth
 	global hBorderWidth
 	global titleHeight
-	yMultiplierSubtract := (winProcessName=="Realm of the Mad God.exe")?((hBorderWidth*2)+titleHeight):(menuHeight+(hBorderWidth*2)+titleHeight)
+	yMultiplierSubtract := (winProcessName=="Realm of the Mad God.exe")
+		? ((hBorderWidth*2)+titleHeight)
+		: (menuHeight+(hBorderWidth*2)+titleHeight)
 	multiplierX := ((winSizeX-(vBorderWidth*2))/800)
 	multiplierY := ((winSizeY-yMultiplierSubtract)/600)
 	actualX := (intendedX * multiplierX) + (vBorderWidth*2)
@@ -219,8 +254,10 @@ stretchedWindowPosition(intendedX, intendedY, byref actualX, byref actualY){
 
 ; @param windowX:	x position of a window-related coordinate
 ; @param windowY:	y position of a window-related coordinate
-; @param outputX:	by-reference variable to be set to a client-related x coordinate
-; @param outputY:	by-reference variable to be set to a client-related y coordinate
+; @param outputX:	by-reference variable to be set to a client-related
+;	x coordinate
+; @param outputY:	by-reference variable to be set to a client-related
+;	y coordinate
 windowPosToClientPos(windowX, windowY, byref outputX, byref outputY){
 	WinGetTitle, winTitle, A
 	WinGet, winProcessName, ProcessName, A
@@ -235,11 +272,15 @@ windowPosToClientPos(windowX, windowY, byref outputX, byref outputY){
 		outputX := windowX
 		outputY := windowY
 	;opera, ff
-	} else if(winTitle=="Realm of the Mad God - Opera"||winTitle=="Realm of the Mad God - Mozilla Firefox"||winTitle=="Realm of the Mad God - Mozilla Firefox (Private Browsing)") {
+	} else if(winTitle=="Realm of the Mad God - Opera"
+	|| winTitle=="Realm of the Mad God - Mozilla Firefox"
+	|| winTitle=="Realm of the Mad God - Mozilla Firefox (Private Browsing)") {
 		outputX := windowX - vBorderWidth
 		outputY := windowY
 	;IE, safari, steam
-	} else if(winTitle=="Realm of the Mad God - Windows Internet Explorer"||winProcessName=="Safari.exe"||winProcessName=="Realm of the Mad God.exe"){
+	} else if(winTitle=="Realm of the Mad God - Windows Internet Explorer"
+	|| winProcessName=="Safari.exe"
+	|| winProcessName=="Realm of the Mad God.exe"){
 		outputX := windowX - vBorderWidth
 		outputY := windowY - (hBorderWidth+titleHeight)
 	;chrome (when maximized)

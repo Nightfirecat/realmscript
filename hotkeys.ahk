@@ -1,8 +1,9 @@
-; Create custom binds by using the key combination followed by two colons (::), using the function
-; sendChat, and passing the string you want as a bind in quotes. Follow this with a line reading
-; only `Return`. Below are some binds which you may use yourself, or use as templates for new binds.
-; If you would like to make your own (custom) hotkeys,
-; more is described here: http://ahkscript.org/docs/Hotkeys.htm#Intro
+; Create custom binds by using the key combination followed by two colons (::),
+; using the function sendChat, and passing the string you want as a bind in
+; quotes. Follow this with a line reading only `Return`.
+; Below are some binds which you may use yourself, or use as templates for new
+; binds. If you would like to make your own (custom) hotkeys, more is described
+; here: http://ahkscript.org/docs/Hotkeys.htm#Intro
 
 F1::
 	sendChat("Heal please?")
@@ -29,8 +30,8 @@ F12::
 Return
 
 
-; The following binds double-click on an inventory space to swap items/abilities/armors/rings.
-; Add or remove them as you see fit.
+; The following binds double-click on an inventory space to swap
+; items/abilities/armors/rings. Add or remove them as you see fit.
 
 ^1::
 	invSwap(1)	;;;;; CHANGE TO YOUR WEAPON SWAP INVENTORY SLOT
@@ -41,7 +42,8 @@ Return
 Return
 
 
-; Here are some other 'default' binds which you can leave as-is, delete, or change, if you wish.
+; Here are some other 'default' binds which you can leave as-is, delete, or
+; change, if you wish.
 
 `:: ;(backtick)
 	sendChat("/pause")
@@ -63,7 +65,8 @@ Return
 ^F8:: ExitApp
 
 
-; The following are in place to prevent accidental closure of a window or tab because of nearby binds.
+; The following are in place to prevent accidental closure of a window or tab
+; because of nearby binds.
 
 ^q::
 Return
