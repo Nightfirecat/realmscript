@@ -321,7 +321,7 @@ windowPosToClientPos(windowX, windowY, byref outputX, byref outputY) {
 	global vBorderWidth
 	global hBorderWidth
 	global titleHeight
-	
+
 	;chrome (not maximized)
 	if (winTitle=="Realm of the Mad God - Google Chrome"&&winMax==0) {
 		outputX := windowX
