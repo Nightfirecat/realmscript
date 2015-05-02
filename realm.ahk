@@ -77,17 +77,17 @@ STARTUP:
 	WinNotActive()
 Return
 
-WinActive(){
+WinActive() {
 	WinGetTitle, winTitle, A
 	WinGet, winProcessName, ProcessName, A
 	global USE_CUSTOM_CURSOR, CUSTOM_CURSOR
 	Suspend Off
-	if(DISABLE_RESIZE
+	if (DISABLE_RESIZE
 	&& (InStr(winTitle, "Adobe Flash Player")
-	|| winProcessName=="Realm of the Mad God.exe")){
+	|| winProcessName=="Realm of the Mad God.exe")) {
 		WinSet, Style, -0x40000, ahk_group rotmg	;disable resize borders
 	}
-	if(USE_CUSTOM_CURSOR){
+	if (USE_CUSTOM_CURSOR) {
 		SetSystemCursor("img/cursors/"+CUSTOM_CURSOR,0,0)
 	}
 	WinWaitNotActive ahk_group rotmg
@@ -96,10 +96,10 @@ WinActive(){
 	}
 }
 
-WinNotActive(){
+WinNotActive() {
 	global USE_CUSTOM_CURSOR
 	Suspend on
-	if(USE_CUSTOM_CURSOR){
+	if (USE_CUSTOM_CURSOR) {
 		RestoreCursors()
 	}
 	WinWaitActive ahk_group rotmg
@@ -123,20 +123,20 @@ WinNotActive(){
 Return
 
 ; sends passed string to the chat using the specified mode
-sendChat(message, mode="public"){
+sendChat(message, mode="public") {
 	global
 	local activation_key, key
-	if(mode=="public"){
+	if (mode=="public") {
 		activation_key = %CHAT_ACTIVATION_KEY%
 		key = Enter
-	} else if(mode=="guild") {
+	} else if (mode=="guild") {
 		activation_key = %GUILD_ACTIVATION_KEY%
 		key = g
 	} else { ;mode=="tell"
 		activation_key = %TELL_ACTIVATION_KEY%
 		key = Tab
 	}
-	if(activation_key){
+	if (activation_key) {
 		key = %activation_key%
 	}
 	local ClipSaved := ClipboardAll
@@ -153,7 +153,7 @@ sendChat(message, mode="public"){
 
 ; item swap function
 ; move the mouse to the correct slot, double-click, and move it back
-invSwap(slot){
+invSwap(slot) {
 	MouseGetPos, mousePosX, mousePosY ;mousePosX/Y have old mouse position
 	WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
 	WinGet, winProcessName, ProcessName, A
@@ -164,7 +164,7 @@ invSwap(slot){
 	global titleHeight
 	; move the mouse to the correct slot, double-click (using events),
 	; then move it back
-	if(!imageQualitySearch("inv", imageLocX, imageLocY)){
+	if (!imageQualitySearch("inv", imageLocX, imageLocY)) {
 		;the image search failed (stretched screen)
 		;determine if the window is a steam or projector window,
 		;and adjust the value accordingly
@@ -193,7 +193,7 @@ invSwap(slot){
 	SendEvent {LButton Up}
 	CoordMode, Mouse, Window
 	MouseMove, mousePosX, mousePosY
-	if (LB == "D"){
+	if (LB == "D") {
 		Send {LButton down}
 	}
 	BlockInput, off
@@ -209,7 +209,7 @@ invSwap(slot){
 ; @return:			returns true if the search succeeds; false otherwise
 ; @notes:			If the image search fails (and the function returns false),
 ;	imageLocX and imageLocY will not be set.
-imageQualitySearch(imageName, byref imageLocX, byref imageLocY){
+imageQualitySearch(imageName, byref imageLocX, byref imageLocY) {
 	WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
 	ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%
 		, img\%imageName%-low.png
@@ -236,7 +236,7 @@ imageQualitySearch(imageName, byref imageLocX, byref imageLocY){
 ;	position of the new x position
 ; @param actualY:	by-reference variable to be set to the window-related x
 ;	position of the new y position
-stretchedWindowPosition(intendedX, intendedY, byref actualX, byref actualY){
+stretchedWindowPosition(intendedX, intendedY, byref actualX, byref actualY) {
 	WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
 	WinGet, winProcessName, ProcessName, A
 	global menuHeight
@@ -258,7 +258,7 @@ stretchedWindowPosition(intendedX, intendedY, byref actualX, byref actualY){
 ;	x coordinate
 ; @param outputY:	by-reference variable to be set to a client-related
 ;	y coordinate
-windowPosToClientPos(windowX, windowY, byref outputX, byref outputY){
+windowPosToClientPos(windowX, windowY, byref outputX, byref outputY) {
 	WinGetTitle, winTitle, A
 	WinGet, winProcessName, ProcessName, A
 	WinGet, winMax, MinMax, A
@@ -268,23 +268,23 @@ windowPosToClientPos(windowX, windowY, byref outputX, byref outputY){
 	global titleHeight
 	
 	;chrome (not maximized)
-	if(winTitle=="Realm of the Mad God - Google Chrome"&&winMax==0){
+	if (winTitle=="Realm of the Mad God - Google Chrome"&&winMax==0) {
 		outputX := windowX
 		outputY := windowY
 	;opera, ff
-	} else if(winTitle=="Realm of the Mad God - Opera"
+	} else if (winTitle=="Realm of the Mad God - Opera"
 	|| winTitle=="Realm of the Mad God - Mozilla Firefox"
 	|| winTitle=="Realm of the Mad God - Mozilla Firefox (Private Browsing)") {
 		outputX := windowX - vBorderWidth
 		outputY := windowY
 	;IE, safari, steam
-	} else if(winTitle=="Realm of the Mad God - Windows Internet Explorer"
+	} else if (winTitle=="Realm of the Mad God - Windows Internet Explorer"
 	|| winProcessName=="Safari.exe"
-	|| winProcessName=="Realm of the Mad God.exe"){
+	|| winProcessName=="Realm of the Mad God.exe") {
 		outputX := windowX - vBorderWidth
 		outputY := windowY - (hBorderWidth+titleHeight)
 	;chrome (when maximized)
-	} else if(winTitle=="Realm of the Mad God - Google Chrome"&&winMax==1){
+	} else if (winTitle=="Realm of the Mad God - Google Chrome"&&winMax==1) {
 		outputX := windowX - vBorderWidth
 		outputY := windowY - hBorderWidth
 	} else { ;projector

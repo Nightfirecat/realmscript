@@ -79,7 +79,7 @@ Return
 RButton::
 	Send +{LButton}
 	GetKeyState, LB, LButton, P
-	if (LB == "D"){
+	if (LB == "D") {
 		Send {LButton down}
 	}
 Return
@@ -105,10 +105,10 @@ Return
 	global hBorderWidth
 	global titleHeight
 	stretched := false
-	if(!imageQualitySearch("enter", imageLocX, imageLocY)){
+	if (!imageQualitySearch("enter", imageLocX, imageLocY)) {
 		stretched := !imageQualitySearch("change", imageLocX, imageLocY)
 	}
-	if(stretched){
+	if (stretched) {
 		intendedX := 698
 		intendedY := 575
 		stretchedWindowPosition(intendedX, intendedY, stretchedX, stretchedY)
@@ -130,18 +130,18 @@ Return
 ; scroll the chat log with the default in game keybinds
 +WheelUp::
 	global SCROLL_CHAT_UP_KEY
-	if(SCROLL_CHAT_UP_KEY){
+	if (SCROLL_CHAT_UP_KEY) {
 		key = %SCROLL_CHAT_UP_KEY%
-	}else{
+	} else {
 		key = PgUp
 	}
 	Send {%key%}
 Return
 +WheelDown::
 	global SCROLL_CHAT_DOWN_KEY
-	if(SCROLL_CHAT_UP_KEY){
+	if (SCROLL_CHAT_UP_KEY) {
 		key = %SCROLL_CHAT_UP_KEY%
-	}else{
+	} else {
 		key = PgDn
 	}
 	Send {%key%}
