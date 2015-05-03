@@ -15,8 +15,8 @@ You can [download the project's files
 * Open `options.ahk` and `hotkeys.ahk` using your preferred text editor
   **(Windows users, do not use Notepad; use
   [Notepad++](http://notepadplusplus.org/) or some other editor!)**
-* Choose your default settings in `options.ahk` and edit, add, or delete binds
-  as needed in `hotkeys.ahk`.
+* Choose your default settings in `options.ahk` and add, delete, or edit binds
+  as needed in `hotkeys.ahk`
 
 ##Default Binds
 
@@ -67,6 +67,23 @@ You can [download the project's files
 * Ctrl+f acts as a fixed interact key for portals and character select
 * Ctrl+1 and Ctrl+2 act as item-swap binds.
 * Ctrl+q and Ctrl+e are disabled to avoid accidental presses.
+
+##Frequently Asked Questions
+
+<dl>
+	<dt>I don't like one of the default binds. How do I get rid of it?</dt>
+	<dd>
+		Within `hotkeys.ahk`, search for the key pressed for the hotkey (for
+		example, <kbd>F12</kbd>) and remove the lines from the beginning of the
+		definition (eg. `F12::`) until the next line that reads `Return`.
+	</dd>
+	<dt>How many hotkeys can I add?</dt>
+	<dd>
+		As many as you'd like. Keep in mind that creating hotkeys without
+		modifier keys (ctrl, alt, shift) may cause unintended effects for keys
+		that are used otherwise.
+	</dd>
+</dl>
 
 ##Personal Thanks
 
