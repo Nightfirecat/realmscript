@@ -91,7 +91,7 @@ good to go!
 ##Troubleshooting
 
 This section will cover some common issues but will, of course, not be fully
-comprehensive of all possible issues which can occur with this script.
+comprehensive of all possible issues which can occur with this script.  
 If you encounter an issue which is not covered below, [please submit it to this
 repository's issue tracker](issues) and I'd be more than happy to help resolve
 the problem.
