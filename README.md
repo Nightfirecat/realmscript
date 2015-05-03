@@ -98,18 +98,19 @@ the problem.
 
 <dl>
 	<dt>
-		I get an error reading <u>#Include file "includes/SetSystemCursor.ahk"
-		cannot be opened.</u>
+		I get an error reading <samp>#Include file
+		"includes/SetSystemCursor.ahk" cannot be opened.</samp>
 	</dt>
 	<dd>
-		Since July 20, 2013 (commit <a
-		href="commit/2b7fcb3c6fb92a6ef959c85dff57078c6dddeb94"><tt
-		>2b7fcb3</tt></a>), this script has included a small library to reliably
-		set the system cursor. Please make sure you are using the latest version
-		of this script.
+		Since July 20, 2013 (commit <a href=
+		"/Nightfirecat/realmscript/commit/2b7fcb3c6fb92a6ef959c85dff57078c6dddeb94"
+		><tt>2b7fcb3</tt></a>), this script has included a small library to
+		reliably set the system cursor. Please make sure you are using the
+		latest version of this script.
 	</dd>
 	<dt>
-		I get an error reading <u>Error: Invalid file path or cursor name</u>
+		I get an error reading <samp>Error: Invalid file path or cursor
+		name</samp>
 	</dt>
 	<dd>
 		The cursors provided with this script reside in the "/img/cursors"
@@ -118,13 +119,13 @@ the problem.
 		at that path, or ensure your cursor path is correct.
 	</dd>
 	<dt>
-		I get an error containing <u>This line does not contain a recognized
-		action.</u>
+		I get an error containing <samp>This line does not contain a recognized
+		action.</samp>
 	</dt>
 	<dd>
 		You are running an old version of AutoHotKey. Visit the
-		<a href="#download and setup">download and setup section for a link to
-		download and install the latest version of AutoHotKey.
+		<a href="#download and setup">download and setup section</a> for a link
+		to download and install the latest version of AutoHotKey.
 	</dd>
 </dl>
 
