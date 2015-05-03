@@ -75,9 +75,10 @@ good to go!
 <dl>
 	<dt>I don't like one of the default binds. How do I get rid of it?</dt>
 	<dd>
-		Within `hotkeys.ahk`, search for the key pressed for the hotkey (for
-		example, <kbd>F12</kbd>) and remove the lines from the beginning of the
-		definition (eg. `F12::`) until the next line that reads `Return`.
+		Within <tt>hotkeys.ahk</tt>, search for the key pressed for the hotkey
+		(for example, <kbd>F12</kbd>) and remove the lines from the beginning of
+		the definition (eg. <tt>F12::</tt>) until the next line that reads
+		<tt>Return</tt>.
 	</dd>
 	<dt>How many hotkeys can I add?</dt>
 	<dd>
@@ -101,9 +102,11 @@ the problem.
 		cannot be opened.</u>
 	</dt>
 	<dd>
-		Since July 20, 2013 (commit 2b7fcb3), this script has included a small
-		library to reliably set the system cursor. Please make sure you are
-		using the latest version of this script.
+		Since July 20, 2013 (commit <a
+		href="commit/2b7fcb3c6fb92a6ef959c85dff57078c6dddeb94"><tt
+		>2b7fcb3</tt></a>), this script has included a small library to reliably
+		set the system cursor. Please make sure you are using the latest version
+		of this script.
 	</dd>
 	<dt>
 		I get an error reading <u>Error: Invalid file path or cursor name</u>
@@ -119,9 +122,9 @@ the problem.
 		action.</u>
 	</dt>
 	<dd>
-		You are running an old version of AutoHotKey. Visit the [download and
-		setup](#download-and-setup) section for a link to download and install
-		the latest version of AutoHotKey.
+		You are running an old version of AutoHotKey. Visit the
+		<a href="#download and setup">download and setup section for a link to
+		download and install the latest version of AutoHotKey.
 	</dd>
 </dl>
 
