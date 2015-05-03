@@ -85,6 +85,44 @@ You can [download the project's files
 	</dd>
 </dl>
 
+##Troubleshooting
+
+This section will cover some common issues but will, of course, not be fully
+comprehensive of all possible issues which can occur with this script.
+If you encounter an issue which is not covered below, [please submit it to this
+repository's issue tracker](issues) and I'd be more than happy to help resolve
+the problem.
+
+<dl>
+	<dt>
+		I get an error reading <u>#Include file "includes/SetSystemCursor.ahk"
+		cannot be opened.</u>
+	</dt>
+	<dd>
+		Since July 20, 2013 (commit 2b7fcb3), this script has included a small
+		library to reliably set the system cursor. Please make sure you are
+		using the latest version of this script.
+	</dd>
+	<dt>
+		I get an error reading <u>Error: Invalid file path or cursor name</u>
+	</dt>
+	<dd>
+		The cursors provided with this script reside in the "/img/cursors"
+		directory - if they are not present, trying to use them for your custom
+		cursor will cause this error. Make sure that they have been downloaded
+		at that path, or ensure your cursor path is correct.
+	</dd>
+	<dt>
+		I get an error containing <u>This line does not contain a recognized
+		action.</u>
+	</dt>
+	<dd>
+		You are running an old version of AutoHotKey. Visit the [download and
+		setup](#download) section for a link to download and install the latest
+		version of AutoHotKey.
+	</dd>
+</dl>
+
 ##Personal Thanks
 
 I'd like to extend a big personal thanks to a couple people who made this
