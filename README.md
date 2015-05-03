@@ -103,7 +103,7 @@ the problem.
 	</dt>
 	<dd>
 		Since July 20, 2013 (commit <a href=
-		"/Nightfirecat/realmscript/commit/2b7fcb3c6fb92a6ef959c85dff57078c6dddeb94"
+		"https://github.com/Nightfirecat/realmscript/commit/2b7fcb3c6fb92a6ef959c85dff57078c6dddeb94"
 		><tt>2b7fcb3</tt></a>), this script has included a small library to
 		reliably set the system cursor. Please make sure you are using the
 		latest version of this script.
