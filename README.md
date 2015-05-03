@@ -3,13 +3,10 @@
 An <abbr title="AutoHotKey">AHK</abbr> script for Realm of the Mad God,
 enhancing gameplay with hotkeys for useful text and click macros.
 
-##Download
+##Download and Setup
 
-You can [download the project's files
+* [Download the project's files
   here](https://github.com/Nightfirecat/realmscript/zipball/master).
-
-##Directions for Use
-
 * Extract the archive to a folder of your choice
 * Install [Autohotkey](http://ahkscript.org/) for Windows
 * Open `options.ahk` and `hotkeys.ahk` using your preferred text editor
@@ -17,6 +14,11 @@ You can [download the project's files
   [Notepad++](http://notepadplusplus.org/) or some other editor!)**
 * Choose your default settings in `options.ahk` and add, delete, or edit binds
   as needed in `hotkeys.ahk`
+
+##Running the Script
+
+Just open `realm.ahk` after AutoHotKey is installed on your system, and you're
+good to go!
 
 ##Default Binds
 
@@ -118,8 +120,8 @@ the problem.
 	</dt>
 	<dd>
 		You are running an old version of AutoHotKey. Visit the [download and
-		setup](#download) section for a link to download and install the latest
-		version of AutoHotKey.
+		setup](#download-and-setup) section for a link to download and install
+		the latest version of AutoHotKey.
 	</dd>
 </dl>
 
