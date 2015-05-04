@@ -1,11 +1,11 @@
-;;;;; global vars
+; include global options
 #include options.ahk
 
-;;;;;;;;;;;;;; DO NOT DELETE!!
-goto STARTUP ; DO NOT DELETE!!
-;;;;;;;;;;;;;; DO NOT DELETE!!
+; check version, install files (for compiled scripts), set up global vars,
+; start hotkey checking
+goto STARTUP
 
-;;;;; hotkeys
+; include hotkeys (must happen after window title group creation)
 #include hotkeys.ahk
 
 
@@ -19,6 +19,24 @@ STARTUP:
 		Run, http://ahkscript.org/
 		ExitApp
 	}
+
+	; ensure working directories, create dependencies for compiled versions
+	IfNotExist, img/
+		FileCreateDir, img
+	IfNotExist, img/cursors/
+		FileCreateDir, img/cursors
+	FileInstall, img/change-high.png, img/change-high.png, 1
+	FileInstall, img/change-med.png, img/change-med.png, 1
+	FileInstall, img/change-low.png, img/change-low.png, 1
+	FileInstall, img/enter-high.png, img/enter-high.png, 1
+	FileInstall, img/enter-med.png, img/enter-med.png, 1
+	FileInstall, img/enter-low.png, img/enter-low.png, 1
+	FileInstall, img/inv-high.png, img/inv-high.png, 1
+	FileInstall, img/inv-med.png, img/inv-med.png, 1
+	FileInstall, img/inv-low.png, img/inv-low.png, 1
+	FileInstall, img/realmscript.ico, img/realmscript.ico, 1
+	FileInstall, img/realmscript_paused.ico, img/realmscript_paused.ico, 1
+	FileInstall, img/cursors/bmj_precision.cur, img/cursors/bmj_precision.cur
 
 	; set script directives, global settings, global vars
 	OnExit, ExitSub
@@ -35,6 +53,9 @@ STARTUP:
 	SysGet, vBorderWidth, 32
 	SysGet, hBorderWidth, 33
 	SysGet, titleHeight, 4
+
+	; set icon
+	Menu, Tray, Icon, img/realmscript.ico, , 1
 
 	Suspend On
 	GroupAdd rotmg, % "Realm of the Mad God"
@@ -82,6 +103,7 @@ WinActive() {
 	WinGet, winProcessName, ProcessName, A
 	global USE_CUSTOM_CURSOR, CUSTOM_CURSOR
 	Suspend Off
+	Menu, Tray, Icon, img/realmscript.ico, , 1
 	if (DISABLE_RESIZE
 	&& (InStr(winTitle, "Adobe Flash Player")
 	|| winProcessName=="Realm of the Mad God.exe")) {
@@ -99,6 +121,7 @@ WinActive() {
 WinNotActive() {
 	global USE_CUSTOM_CURSOR
 	Suspend on
+	Menu, Tray, Icon, img/realmscript_paused.ico, , 1
 	if (USE_CUSTOM_CURSOR) {
 		RestoreCursors()
 	}

@@ -5,20 +5,34 @@ enhancing gameplay with hotkeys for useful text and click macros.
 
 ##Download and Setup
 
+There are currently two options for using realmscript: running the source script
+or using a compiled .exe of the script. Running the script from source
+(recommended!) will allow greater flexibility and full access to realmscript's
+features, where using the compiled .exe is a faster and easier way to get
+started and does not require you to install AutoHotKey, *but does not support
+most customization features*!
+
+###Running from source:
+
 * [Download the project's files
   here](https://github.com/Nightfirecat/realmscript/zipball/master).
 * Extract the archive to a folder of your choice
 * Install [Autohotkey](http://ahkscript.org/) for Windows
-* Open `options.ahk` and `hotkeys.ahk` using your preferred text editor
-  **(Windows users, do not use Notepad; use
-  [Notepad++](http://notepadplusplus.org/) or some other editor!)**
+* Open `options.ahk` and `hotkeys.ahk` using your preferred text editor  
+  **(Windows users, I recommend using
+  [Notepad++](http://notepadplusplus.org/) or another editor which supports
+  linux-style line endings)**
 * Choose your default settings in `options.ahk` and add, delete, or edit binds
   as needed in `hotkeys.ahk`
+* Run `realmscript.exe` to initiate the script
 
-##Running the Script
+###Running the compiled .exe:
 
-Just open `realm.ahk` after AutoHotKey is installed on your system, and you're
-good to go!
+* Visit
+  [the releases page](https://github.com/Nightfirecat/realmscript/releases) and
+  download the latest compiled script's archive
+* Extract the archive to a folder of your choice
+* Run the included .exe
 
 ##Default Binds
 
@@ -85,6 +99,21 @@ good to go!
 		As many as you'd like. Keep in mind that creating hotkeys without
 		modifier keys (ctrl, alt, shift) may cause unintended effects for keys
 		that are used otherwise.
+	</dd>
+	<dt>How can I edit my settings or hotkeys using the .exe?</dt>
+	<dd>
+		Sadly, you can't. This is one of the notable limitations, because
+		compiled scripts will incorporate the code of `#include`d files rather
+		than continue to obey normal `#include` commands, thus it can't be
+		configured using `options.ahk` and `hotkeys.ahk` like the source script
+		can.
+	</dd>
+	<dt>Can I change the cursor used for the .exe version?</dt>
+	<dd>
+		You can replace the `bmj_precision.cur` file that is generated with a
+		cursor of your choice after the script has begun running. You may also
+		delete it entirely, though that will cause an error message to appear
+		each time your game comes into focus.
 	</dd>
 </dl>
 

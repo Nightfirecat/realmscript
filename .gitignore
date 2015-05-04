@@ -7,3 +7,7 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# compiled script and ahk2exe batch file
+realmscript*.exe
+compile.bat
