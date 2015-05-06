@@ -101,7 +101,7 @@ Return
 WinActive() {
 	WinGetTitle, winTitle, A
 	WinGet, winProcessName, ProcessName, A
-	global USE_CUSTOM_CURSOR, CUSTOM_CURSOR
+	global DISABLE_RESIZE, USE_CUSTOM_CURSOR, CUSTOM_CURSOR
 	Suspend Off
 	Menu, Tray, Icon, img/realmscript.ico, , 1
 	if (DISABLE_RESIZE
