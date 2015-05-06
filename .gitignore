@@ -10,4 +10,5 @@ Thumbs.db
 
 # compiled script and ahk2exe batch file
 realmscript*.exe
+realmscript*.exe.zip
 compile.bat
