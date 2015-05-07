@@ -69,7 +69,6 @@ Return
 ; because of nearby binds.
 
 ^q::
-Return
 ^e::
 Return
 
