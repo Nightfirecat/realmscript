@@ -103,17 +103,17 @@ most customization features*!
 	<dt>How can I edit my settings or hotkeys using the .exe?</dt>
 	<dd>
 		Sadly, you can't. This is one of the notable limitations, because
-		compiled scripts will incorporate the code of `#include`d files rather
-		than continue to obey normal `#include` commands, thus it can't be
-		configured using `options.ahk` and `hotkeys.ahk` like the source script
-		can.
+		compiled scripts will incorporate the code of <tt>#include</tt>d files
+		rather than continue to obey normal <tt>#include</tt> commands, thus it
+		can't be configured using <tt>options.ahk</tt> and <tt>hotkeys.ahk</tt>
+		like the source script can.
 	</dd>
 	<dt>Can I change the cursor used for the .exe version?</dt>
 	<dd>
-		You can replace the `bmj_precision.cur` file that is generated with a
-		cursor of your choice after the script has begun running. You may also
-		delete it entirely, though that will cause an error message to appear
-		each time your game comes into focus.
+		You can replace the <tt>bmj_precision.cur</tt> file that is generated
+		with a cursor of your choice after the script has begun running. You may
+		also delete it entirely, though that will cause an error message to
+		appear each time your game comes into focus.
 	</dd>
 </dl>
 
