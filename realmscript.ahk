@@ -180,8 +180,8 @@ tpTarget() {
 }
 
 scrollChat(direction:="up") {
-	global SCROLL_CHAT_UP_KEY
-	global SCROLL_CHAT_DOWN_KEY
+	global
+	local key
 	if (direction == "up") {
 		if (SCROLL_CHAT_UP_KEY) {
 			key = %SCROLL_CHAT_UP_KEY%
