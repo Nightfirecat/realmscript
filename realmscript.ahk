@@ -217,6 +217,8 @@ interact() {
 		windowPosToClientPos(stretchedX, stretchedY, posX, posY)
 	} else {
 		windowPosToClientPos(imageLocX, imageLocY, posX, posY)
+		posX := posX + 38
+		posY := posY + 15
 	}
 	BlockInput, on
 	CoordMode, Mouse, Client
