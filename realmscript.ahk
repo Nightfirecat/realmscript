@@ -158,19 +158,19 @@ Return
 ; sends passed string to the chat using the specified mode
 sendChat(message, mode="public") {
 	global
-	local activation_key, key
+	local activationKey, key
 	if (mode == "public") {
-		activation_key = %CHAT_ACTIVATION_KEY%
+		activationKey = %CHAT_ACTIVATION_KEY%
 		key = Enter
 	} else if (mode == "guild") {
-		activation_key = %GUILD_ACTIVATION_KEY%
+		activationKey = %GUILD_ACTIVATION_KEY%
 		key = g
 	} else if (mode == "tell") {
-		activation_key = %TELL_ACTIVATION_KEY%
+		activationKey = %TELL_ACTIVATION_KEY%
 		key = Tab
 	}
-	if (activation_key) {
-		key = %activation_key%
+	if (activationKey) {
+		key = %activationKey%
 	}
 	local ClipSaved := ClipboardAll
 	clipboard := message
@@ -221,18 +221,20 @@ interact() {
 		stretched := !imageQualitySearch("change", imageLocX, imageLocY)
 	}
 	if (stretched) {
-		intendedX := 698
-		intendedY := 575
-		stretchedWindowPosition(intendedX, intendedY, stretchedX, stretchedY)
-		windowPosToClientPos(stretchedX, stretchedY, posX, posY)
+		clientButtonX := 698
+		clientButtonY := 575
+		stretchedWindowPosition(clientButtonX, clientButtonY, stretchedX, stretchedY)
+		windowPosToClientPos(stretchedX, stretchedY, buttonCenterX, buttonCenterY)
 	} else {
+		imageSearchSizeX := 76
+		imageSearchSizeY := 30
 		windowPosToClientPos(imageLocX, imageLocY, posX, posY)
-		posX := posX + 38
-		posY := posY + 15
+		buttonCenterX := posX + (imageSearchSizeX / 2)
+		buttonCenterY := posY + (imageSearchSizeY / 2)
 	}
 	BlockInput, on
 	CoordMode, Mouse, Client
-	MouseMove, posX, posY
+	MouseMove, buttonCenterX, buttonCenterY
 	SendEvent {LButton Down}
 	SendEvent {LButton Up}
 	CoordMode, Mouse, Window
@@ -252,30 +254,36 @@ invSwap(slot) {
 	global vBorderWidth
 	global hBorderWidth
 	global titleHeight
+
 	; move the mouse to the correct slot, double-click (using events),
 	; then move it back
+	invIconOffsetX := 27
+	invIconOffsetY := 46
+	slotOffsetX := Mod((44 * (slot - 1)), (4 * 44))
+	slotOffsetY := (44 * ((slot - 1) // 4))
 	if (!imageQualitySearch("inv", imageLocX, imageLocY)) {
 		; the image search failed (stretched screen)
 		; determine if the window is a steam or projector window,
 		; and adjust the value accordingly
-		intendedX := 634 + Mod((44 * (slot-1)), (4*44))
-		intendedY := 400 + (44 * ((slot-1)//(4)))
+		windowX := 634 + slotOffsetX
+		windowY := 400 + slotOffsetY
 
 		; stretchedX and stretchedY are set by the function call
-		stretchedWindowPosition(intendedX, intendedY, stretchedX, stretchedY)
+		stretchedWindowPosition(windowX, windowY, stretchedX, stretchedY)
 
-		; posX and posY are set by the function call
-		windowPosToClientPos(stretchedX, stretchedY, posX, posY)
-	} else { ; not stretched, imageLocX/Y are set
-		slotX := imageLocX + 27 + Mod((44 * (slot-1)), (4*44))
-		slotY := imageLocY + 46 + (44 * ((slot-1)//(4)))
+		; slotX and slotY are set by the function call
+		windowPosToClientPos(stretchedX, stretchedY, slotX, slotY)
+	} else {
+		; not stretched, imageLocX/Y are set
+		windowX := imageLocX + invIconOffsetX + slotOffsetX
+		windowY := imageLocY + invIconOffsetY + slotOffsetY
 
-		; posX and posY are set by the function call
-		windowPosToClientPos(slotX, slotY, posX, posY)
+		; slotX and slotY are set by the function call
+		windowPosToClientPos(windowX, windowY, slotX, slotY)
 	}
 	BlockInput, on
 	CoordMode, Mouse, Client
-	MouseMove, posX, posY
+	MouseMove, slotX, slotY
 	SendEvent {Control Up}
 	SendEvent {LButton Down}
 	SendEvent {LButton Up}
