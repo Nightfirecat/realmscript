@@ -24,7 +24,7 @@ most customization features*!
   linux-style line endings)**
 * Choose your default settings in `options.ahk` and add, delete, or edit binds
   as needed in `hotkeys.ahk`
-* Run `realmscript.exe` to initiate the script
+* Run `realmscript.ahk` to initiate the script
 
 ###Running the compiled .exe:
 

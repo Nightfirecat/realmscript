@@ -61,29 +61,29 @@ STARTUP:
 	GroupAdd rotmg, % "Realm of the Mad God"
 	GroupAdd rotmg, % "Realm of the Mad God - Mozilla Firefox"
 	GroupAdd rotmg, % "Realm of the Mad God - Mozilla Firefox "
-					. "(Private Browsing)"
+	                . "(Private Browsing)"
 	GroupAdd rotmg, % "Realm of the Mad God - Google Chrome"
 	GroupAdd rotmg, % "Realm of the Mad God - Opera"
 	GroupAdd rotmg, % "Realm of the Mad God - Windows Internet Explorer"
 	GroupAdd rotmg, % "Realm of the Mad God | Kabam"
 	GroupAdd rotmg, % "Realm of the Mad God | Kabam - Mozilla Firefox"
 	GroupAdd rotmg, % "Realm of the Mad God | Kabam - Mozilla Firefox "
-					. "(Private Browsing)"
+	                . "(Private Browsing)"
 	GroupAdd rotmg, % "Realm of the Mad God | Kabam - Google Chrome"
 	GroupAdd rotmg, % "Realm of the Mad God | Kabam - Opera"
 	GroupAdd rotmg, % "Realm of the Mad God | Kabam - Windows Internet Explorer"
 	GroupAdd rotmg, % "Play Realm of the Mad God, a free online game on "
-					. "Kongregate"
+	                . "Kongregate"
 	GroupAdd rotmg, % "Play Realm of the Mad God, a free online game on "
-					. "Kongregate - Mozilla Firefox"
+	                . "Kongregate - Mozilla Firefox"
 	GroupAdd rotmg, % "Play Realm of the Mad God, a free online game on "
-					. "Kongregate - Mozilla Firefox (Private Browsing)"
+	                . "Kongregate - Mozilla Firefox (Private Browsing)"
 	GroupAdd rotmg, % "Play Realm of the Mad God, a free online game on "
-					. "Kongregate - Google Chrome"
+	                . "Kongregate - Google Chrome"
 	GroupAdd rotmg, % "Play Realm of the Mad God, a free online game on "
-					. "Kongregate - Opera"
+	                . "Kongregate - Opera"
 	GroupAdd rotmg, % "Play Realm of the Mad God, a free online game on "
-					. "Kongregate - Windows Internet Explorer"
+	                . "Kongregate - Windows Internet Explorer"
 	GroupAdd rotmg, % "Adobe Flash Player 10"
 	GroupAdd rotmg, % "Adobe Flash Player 11"
 	GroupAdd rotmg, % "Adobe Flash Player 12"
@@ -95,6 +95,16 @@ STARTUP:
 	GroupAdd rotmg, % "Adobe Flash Player 18"
 	GroupAdd rotmg, % "Adobe Flash Player 19"
 	GroupAdd rotmg, % "Adobe Flash Player 20"
+	GroupAdd rotmg, % "Adobe Flash Player 21"
+	GroupAdd rotmg, % "Adobe Flash Player 22"
+	GroupAdd rotmg, % "Adobe Flash Player 23"
+	GroupAdd rotmg, % "Adobe Flash Player 24"
+	GroupAdd rotmg, % "Adobe Flash Player 25"
+	GroupAdd rotmg, % "Adobe Flash Player 26"
+	GroupAdd rotmg, % "Adobe Flash Player 27"
+	GroupAdd rotmg, % "Adobe Flash Player 28"
+	GroupAdd rotmg, % "Adobe Flash Player 29"
+	GroupAdd rotmg, % "Adobe Flash Player 30"
 	WinNotActive()
 Return
 
@@ -105,9 +115,9 @@ WinActive() {
 	Suspend Off
 	Menu, Tray, Icon, img/realmscript.ico, , 1
 	if (DISABLE_RESIZE
-	&& (InStr(winTitle, "Adobe Flash Player")
-	|| winProcessName=="Realm of the Mad God.exe")) {
-		WinSet, Style, -0x40000, ahk_group rotmg	;disable resize borders
+	    && (InStr(winTitle, "Adobe Flash Player")
+	        || winProcessName == "Realm of the Mad God.exe")) {
+		WinSet, Style, -0x40000, ahk_group rotmg ; disable resize borders
 	}
 	if (USE_CUSTOM_CURSOR) {
 		SetSystemCursor("img/cursors/"+CUSTOM_CURSOR,0,0)
@@ -142,20 +152,20 @@ WinNotActive() {
 	Blockinput, off
 	Sleep 100
 	clipboard := ClipSaved
-	ClipSaved := "" ;save memory
+	ClipSaved := "" ; save memory
 Return
 
 ; sends passed string to the chat using the specified mode
 sendChat(message, mode="public") {
 	global
 	local activation_key, key
-	if (mode=="public") {
+	if (mode == "public") {
 		activation_key = %CHAT_ACTIVATION_KEY%
 		key = Enter
-	} else if (mode=="guild") {
+	} else if (mode == "guild") {
 		activation_key = %GUILD_ACTIVATION_KEY%
 		key = g
-	} else { ;mode=="tell"
+	} else if (mode == "tell") {
 		activation_key = %TELL_ACTIVATION_KEY%
 		key = Tab
 	}
@@ -171,7 +181,7 @@ sendChat(message, mode="public") {
 	Blockinput, off
 	Sleep 100
 	clipboard := ClipSaved
-	ClipSaved := "" ;save memory
+	ClipSaved := "" ; save memory
 }
 
 tpTarget() {
@@ -234,8 +244,8 @@ interact() {
 ; item swap function
 ; move the mouse to the correct slot, double-click, and move it back
 invSwap(slot) {
-	MouseGetPos, mousePosX, mousePosY ;mousePosX/Y have old mouse position
-	WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
+	MouseGetPos, mousePosX, mousePosY ; mousePosX/Y have old mouse position
+	WinGetPos, , , winSizeX, winSizeY, A ; winSizeX/Y have window size
 	WinGet, winProcessName, ProcessName, A
 	GetKeyState, LB, LButton, P
 	global menuHeight
@@ -245,22 +255,22 @@ invSwap(slot) {
 	; move the mouse to the correct slot, double-click (using events),
 	; then move it back
 	if (!imageQualitySearch("inv", imageLocX, imageLocY)) {
-		;the image search failed (stretched screen)
-		;determine if the window is a steam or projector window,
-		;and adjust the value accordingly
+		; the image search failed (stretched screen)
+		; determine if the window is a steam or projector window,
+		; and adjust the value accordingly
 		intendedX := 634 + Mod((44 * (slot-1)), (4*44))
 		intendedY := 400 + (44 * ((slot-1)//(4)))
 
-		;stretchedX and stretchedY are set by the function call
+		; stretchedX and stretchedY are set by the function call
 		stretchedWindowPosition(intendedX, intendedY, stretchedX, stretchedY)
 
-		;posX and posY are set by the function call
+		; posX and posY are set by the function call
 		windowPosToClientPos(stretchedX, stretchedY, posX, posY)
-	} else { ;not stretched, imageLocX/Y are set
+	} else { ; not stretched, imageLocX/Y are set
 		slotX := imageLocX + 27 + Mod((44 * (slot-1)), (4*44))
 		slotY := imageLocY + 46 + (44 * ((slot-1)//(4)))
 
-		;posX and posY are set by the function call
+		; posX and posY are set by the function call
 		windowPosToClientPos(slotX, slotY, posX, posY)
 	}
 	BlockInput, on
@@ -280,17 +290,17 @@ invSwap(slot) {
 	stretched := false
 }
 
-; @param imageName:	base file name (<name>-[low|high|med].png); must be located
-;	in the img\ directory
-; @param imageLocX:	by-reference variable to be set to the window-related x
-;	position of the upper-left corner of the image
-; @param imageLocY:	by-reference variable to be set to the window-related y
-;	position of the upper-left corner of the image
-; @return:			returns true if the search succeeds; false otherwise
-; @notes:			If the image search fails (and the function returns false),
-;	imageLocX and imageLocY will not be set.
+; @param imageName: base file name (<name>-[low|high|med].png); must be located
+;                   in the img\ directory
+; @param imageLocX: by-reference variable to be set to the window-related x
+;                   position of the upper-left corner of the image
+; @param imageLocY: by-reference variable to be set to the window-related y
+;                   position of the upper-left corner of the image
+; @return:          returns true if the search succeeds; false otherwise
+; @notes:           If the image search fails (and the function returns false),
+;                   imageLocX and imageLocY will not be set.
 imageQualitySearch(imageName, byref imageLocX, byref imageLocY) {
-	WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
+	WinGetPos, , , winSizeX, winSizeY, A ; winSizeX/Y have window size
 	ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%
 		, img\%imageName%-low.png
 	if ErrorLevel {
@@ -308,36 +318,36 @@ imageQualitySearch(imageName, byref imageLocX, byref imageLocY) {
 	return true
 }
 
-; @param intendedX:	what would otherwise be the correct x location in a
-;	non-stretched client
-; @param intendedY:	what would otherwise be the correct y location in a
-;	non-stretched client
-; @param actualX:	by-reference variable to be set to the window-related x
-;	position of the new x position
-; @param actualY:	by-reference variable to be set to the window-related x
-;	position of the new y position
+; @param intendedX: what would otherwise be the correct x location in a
+;                   non-stretched client
+; @param intendedY: what would otherwise be the correct y location in a
+;                   non-stretched client
+; @param actualX:   by-reference variable to be set to the window-related x
+;                   position of the new x position
+; @param actualY:   by-reference variable to be set to the window-related x
+;                   position of the new y position
 stretchedWindowPosition(intendedX, intendedY, byref actualX, byref actualY) {
-	WinGetPos, , , winSizeX, winSizeY, A ;winSizeX/Y have window size
+	WinGetPos, , , winSizeX, winSizeY, A ; winSizeX/Y have window size
 	WinGet, winProcessName, ProcessName, A
 	global menuHeight
 	global vBorderWidth
 	global hBorderWidth
 	global titleHeight
-	yMultiplierSubtract := (winProcessName=="Realm of the Mad God.exe")
-		? ((hBorderWidth*2)+titleHeight)
-		: (menuHeight+(hBorderWidth*2)+titleHeight)
-	multiplierX := ((winSizeX-(vBorderWidth*2))/800)
-	multiplierY := ((winSizeY-yMultiplierSubtract)/600)
+	yMultiplierSubtract := (winProcessName == "Realm of the Mad God.exe")
+		? ((hBorderWidth * 2) + titleHeight)
+		: (menuHeight + (hBorderWidth * 2) + titleHeight)
+	multiplierX := ((winSizeX - (vBorderWidth * 2)) / 800)
+	multiplierY := ((winSizeY-yMultiplierSubtract) / 600)
 	actualX := (intendedX * multiplierX) + (vBorderWidth*2)
 	actualY := (intendedY * multiplierY) + (yMultiplierSubtract)
 }
 
-; @param windowX:	x position of a window-related coordinate
-; @param windowY:	y position of a window-related coordinate
-; @param outputX:	by-reference variable to be set to a client-related
-;	x coordinate
-; @param outputY:	by-reference variable to be set to a client-related
-;	y coordinate
+; @param windowX: x position of a window-related coordinate
+; @param windowY: y position of a window-related coordinate
+; @param outputX: by-reference variable to be set to a client-related
+;                 x coordinate
+; @param outputY: by-reference variable to be set to a client-related
+;                 y coordinate
 windowPosToClientPos(windowX, windowY, byref outputX, byref outputY) {
 	WinGetTitle, winTitle, A
 	WinGet, winProcessName, ProcessName, A
@@ -347,29 +357,29 @@ windowPosToClientPos(windowX, windowY, byref outputX, byref outputY) {
 	global hBorderWidth
 	global titleHeight
 
-	;chrome (not maximized)
-	if (winTitle=="Realm of the Mad God - Google Chrome"&&winMax==0) {
+	; chrome (not maximized)
+	if (winTitle == "Realm of the Mad God - Google Chrome" && winMax == 0) {
 		outputX := windowX
 		outputY := windowY
-	;opera, ff
-	} else if (winTitle=="Realm of the Mad God - Opera"
-	|| winTitle=="Realm of the Mad God - Mozilla Firefox"
-	|| winTitle=="Realm of the Mad God - Mozilla Firefox (Private Browsing)") {
+	; opera, ff
+	} else if (winTitle == "Realm of the Mad God - Opera"
+	           || InStr(winTitle, "Realm of the Mad God - Mozilla Firefox")) {
 		outputX := windowX - vBorderWidth
 		outputY := windowY
-	;IE, safari, steam
-	} else if (winTitle=="Realm of the Mad God - Windows Internet Explorer"
-	|| winProcessName=="Safari.exe"
-	|| winProcessName=="Realm of the Mad God.exe") {
+	; IE, safari, steam
+	} else if (winTitle == "Realm of the Mad God - Windows Internet Explorer"
+	           || winProcessName == "Safari.exe"
+	           || winProcessName == "Realm of the Mad God.exe") {
 		outputX := windowX - vBorderWidth
-		outputY := windowY - (hBorderWidth+titleHeight)
-	;chrome (when maximized)
-	} else if (winTitle=="Realm of the Mad God - Google Chrome"&&winMax==1) {
+		outputY := windowY - (hBorderWidth + titleHeight)
+	; chrome (when maximized)
+	} else if (winTitle == "Realm of the Mad God - Google Chrome"
+	           && winMax == 1) {
 		outputX := windowX - vBorderWidth
 		outputY := windowY - hBorderWidth
-	} else { ;projector
+	} else { ; projector
 		outputX := windowX - vBorderWidth
-		outputY := windowY - (menuHeight+hBorderWidth+titleHeight)
+		outputY := windowY - (menuHeight + hBorderWidth + titleHeight)
 	}
 }
 

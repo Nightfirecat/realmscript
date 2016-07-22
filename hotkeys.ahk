@@ -45,7 +45,7 @@ Return
 ; Here are some other 'default' binds which you can leave as-is, delete, or
 ; change, if you wish.
 
-`:: ;(backtick)
+`:: ; (backtick)
 	sendChat("/pause")
 Return
 
@@ -88,7 +88,7 @@ Return
 	Click Right
 Return
 
-; set a teleport target (input window title and text don't use quotes)
+; set teleport target with ctrl+t
 ^t::
 	tpTarget()
 Return
