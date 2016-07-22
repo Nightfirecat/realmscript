@@ -5,7 +5,6 @@ USE_CUSTOM_CURSOR := 1
 ; name of the .cur file as it appears in /img/cursors/
 ; Available options:
 ;               * bmj_precision.cur
-;               * rotmg_pro_cursor.cur
 CUSTOM_CURSOR := "bmj_precision.cur"
 
 ; Custom activation keys. DO NOT PUT QUOTES AROUND CUSTOM KEYS
