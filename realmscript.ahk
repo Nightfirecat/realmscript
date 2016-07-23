@@ -1,4 +1,7 @@
 ; include global options
+global USE_CUSTOM_CURSOR, CUSTOM_CURSOR, CHAT_ACTIVATION_KEY
+       , TELL_ACTIVATION_KEY, GUILD_ACTIVATION_KEY, SCROLL_CHAT_UP_KEY
+       , SCROLL_CHAT_DOWN_KEY, DISABLE_RESIZE
 #include options.ahk
 
 ; check version, install files (for compiled scripts), set up global vars,
@@ -11,7 +14,7 @@ goto STARTUP
 
 STARTUP:
 	; check AHK version, exit if <1.1 (if not at least AHK_L)
-	if (A_AhkVersion < 1.1) {
+	if (A_AhkVersion < 1.105) {
 		MsgBox, 16, You must update AHK!, % "Your version of AutoHotKey is not "
 			. "sufficient to correctly run realmscript!`nPlease download and "
 			. "install the latest version from http://ahkscript.org/ and run "
@@ -49,6 +52,7 @@ STARTUP:
 	SetKeyDelay 0
 	SetMouseDelay 0
 	SetTitleMatchMode 3
+	global menuHeight, vBorderWidth, hBorderWidth, titleHeight
 	SysGet, menuHeight, 15
 	SysGet, vBorderWidth, 32
 	SysGet, hBorderWidth, 33
@@ -111,7 +115,6 @@ Return
 WinActive() {
 	WinGetTitle, winTitle, A
 	WinGet, winProcessName, ProcessName, A
-	global DISABLE_RESIZE, USE_CUSTOM_CURSOR, CUSTOM_CURSOR
 	Suspend Off
 	Menu, Tray, Icon, img/realmscript.ico, , 1
 	if (DISABLE_RESIZE
@@ -129,7 +132,6 @@ WinActive() {
 }
 
 WinNotActive() {
-	global USE_CUSTOM_CURSOR
 	Suspend on
 	Menu, Tray, Icon, img/realmscript_paused.ico, , 1
 	if (USE_CUSTOM_CURSOR) {
@@ -157,8 +159,6 @@ Return
 
 ; sends passed string to the chat using the specified mode
 sendChat(message, mode="public") {
-	global
-	local activationKey, key
 	if (mode == "public") {
 		activationKey = %CHAT_ACTIVATION_KEY%
 		key = Enter
@@ -172,7 +172,7 @@ sendChat(message, mode="public") {
 	if (activationKey) {
 		key = %activationKey%
 	}
-	local ClipSaved := ClipboardAll
+	ClipSaved := ClipboardAll
 	clipboard := message
 	Blockinput, on
 	Send {%key%}
@@ -190,8 +190,6 @@ tpTarget() {
 }
 
 scrollChat(direction:="up") {
-	global
-	local key
 	if (direction == "up") {
 		if (SCROLL_CHAT_UP_KEY) {
 			key = %SCROLL_CHAT_UP_KEY%
@@ -212,10 +210,6 @@ scrollChat(direction:="up") {
 interact() {
 	MouseGetPos, mousePosX, mousePosY
 	WinGetPos, , , winSizeX, winSizeY, A
-	global menuHeight
-	global vBorderWidth
-	global hBorderWidth
-	global titleHeight
 	stretched := false
 	if (!imageQualitySearch("enter", imageLocX, imageLocY)) {
 		stretched := !imageQualitySearch("change", imageLocX, imageLocY)
@@ -250,10 +244,6 @@ invSwap(slot) {
 	WinGetPos, , , winSizeX, winSizeY, A ; winSizeX/Y have window size
 	WinGet, winProcessName, ProcessName, A
 	GetKeyState, LB, LButton, P
-	global menuHeight
-	global vBorderWidth
-	global hBorderWidth
-	global titleHeight
 
 	; move the mouse to the correct slot, double-click (using events),
 	; then move it back
@@ -337,10 +327,6 @@ imageQualitySearch(imageName, byref imageLocX, byref imageLocY) {
 stretchedWindowPosition(intendedX, intendedY, byref actualX, byref actualY) {
 	WinGetPos, , , winSizeX, winSizeY, A ; winSizeX/Y have window size
 	WinGet, winProcessName, ProcessName, A
-	global menuHeight
-	global vBorderWidth
-	global hBorderWidth
-	global titleHeight
 	yMultiplierSubtract := (winProcessName == "Realm of the Mad God.exe")
 		? ((hBorderWidth * 2) + titleHeight)
 		: (menuHeight + (hBorderWidth * 2) + titleHeight)
@@ -360,10 +346,6 @@ windowPosToClientPos(windowX, windowY, byref outputX, byref outputY) {
 	WinGetTitle, winTitle, A
 	WinGet, winProcessName, ProcessName, A
 	WinGet, winMax, MinMax, A
-	global menuHeight
-	global vBorderWidth
-	global hBorderWidth
-	global titleHeight
 
 	; chrome (not maximized)
 	if (winTitle == "Realm of the Mad God - Google Chrome" && winMax == 0) {
