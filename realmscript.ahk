@@ -346,8 +346,8 @@ stretchedWindowPosition(intendedX, intendedY, byref actualX, byref actualY) {
 		: (menuHeight + (hBorderWidth * 2) + titleHeight)
 	multiplierX := ((winSizeX - (vBorderWidth * 2)) / 800)
 	multiplierY := ((winSizeY-yMultiplierSubtract) / 600)
-	actualX := (intendedX * multiplierX) + (vBorderWidth*2)
-	actualY := (intendedY * multiplierY) + (yMultiplierSubtract)
+	actualX := Round((intendedX * multiplierX) + (vBorderWidth*2))
+	actualY := Round((intendedY * multiplierY) + (yMultiplierSubtract))
 }
 
 ; @param windowX: x position of a window-related coordinate
