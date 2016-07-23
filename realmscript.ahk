@@ -13,14 +13,20 @@ goto STARTUP
 
 
 STARTUP:
-	; check AHK version, exit if <1.1 (if not at least AHK_L)
-	if (A_AhkVersion < 1.105) {
-		MsgBox, 16, You must update AHK!, % "Your version of AutoHotKey is not "
-			. "sufficient to correctly run realmscript!`nPlease download and "
-			. "install the latest version from http://ahkscript.org/ and run "
-			. "realmscript again."
-		Run, http://ahkscript.org/
-		ExitApp
+	; check AHK version, exit if incompatible (v1.1.13 req for arrays)
+	requiredVersion := "1.1.13"
+	requiredVersionParts := StrSplit(requiredVersion, ".")
+	runningVersionParts := StrSplit(A_AhkVersion, ".")
+	Loop % requiredVersionParts.Length()
+	{
+		if (runningVersionParts[A_Index] < requiredVersionParts[A_Index]) {
+			MsgBox, 16, You must update AHK!, % "Your version of AutoHotKey (v"
+			  . A_AhkVersion . ") is not sufficient to correctly run "
+			  . "realmscript!`nPlease download and install the latest version "
+			  . "from http://ahkscript.org/ and run realmscript again."
+			Run, http://ahkscript.org/
+			ExitApp
+		}
 	}
 
 	; ensure working directories, create dependencies for compiled versions
@@ -31,7 +37,7 @@ STARTUP:
 	FileInstall, img/change-high.png, img/change-high.png, 1
 	FileInstall, img/change-med.png, img/change-med.png, 1
 	FileInstall, img/change-low.png, img/change-low.png, 1
-	FileInstall, img/choose-low.png, img/choose-low.png, 1
+	FileInstall, img/close-low.png, img/close-low.png, 1
 	FileInstall, img/enter-high.png, img/enter-high.png, 1
 	FileInstall, img/enter-med.png, img/enter-med.png, 1
 	FileInstall, img/enter-low.png, img/enter-low.png, 1
