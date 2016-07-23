@@ -66,6 +66,8 @@ most customization features*!
   up)
 * <kbd>shift</kbd> + scroll-wheel-down : <kbd>Page Down</kbd>
   (for scrolling chat down)
+* <kbd>Esc</kbd> : Close the package advertisement modal window that appears
+  on login
 
 ##Features
 

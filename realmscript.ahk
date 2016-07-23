@@ -31,6 +31,7 @@ STARTUP:
 	FileInstall, img/change-high.png, img/change-high.png, 1
 	FileInstall, img/change-med.png, img/change-med.png, 1
 	FileInstall, img/change-low.png, img/change-low.png, 1
+	FileInstall, img/choose-low.png, img/choose-low.png, 1
 	FileInstall, img/enter-high.png, img/enter-high.png, 1
 	FileInstall, img/enter-med.png, img/enter-med.png, 1
 	FileInstall, img/enter-low.png, img/enter-low.png, 1
@@ -237,6 +238,33 @@ interact() {
 	stretched := false
 }
 
+closeAd() {
+	MouseGetPos, mousePosX, mousePosY
+	WinGetPos, , , winSizeX, winSizeY, A
+	stretched := !imageQualitySearch("close", imageLocX, imageLocY)
+	if (stretched) {
+		clientButtonX := 637
+		clientButtonY := 104
+		stretchedWindowPosition(clientButtonX, clientButtonY, stretchedX, stretchedY)
+		windowPosToClientPos(stretchedX, stretchedY, buttonCenterX, buttonCenterY)
+	} else {
+		imageSearchSizeX := 24
+		imageSearchSizeY := 25
+		windowPosToClientPos(imageLocX, imageLocY, posX, posY)
+		buttonCenterX := posX + Floor(imageSearchSizeX / 2)
+		buttonCenterY := posY + Floor(imageSearchSizeY / 2)
+	}
+	BlockInput, on
+	CoordMode, Mouse, Client
+	MouseMove, buttonCenterX, buttonCenterY
+	SendEvent {LButton Down}
+	SendEvent {LButton Up}
+	CoordMode, Mouse, Window
+	MouseMove, mousePosX, mousePosY
+	BlockInput, off
+	stretched := false
+}
+
 ; item swap function
 ; move the mouse to the correct slot, double-click, and move it back
 invSwap(slot) {
@@ -299,18 +327,29 @@ invSwap(slot) {
 ;                   imageLocX and imageLocY will not be set.
 imageQualitySearch(imageName, byref imageLocX, byref imageLocY) {
 	WinGetPos, , , winSizeX, winSizeY, A ; winSizeX/Y have window size
-	ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%
-		, img\%imageName%-low.png
-	if ErrorLevel {
-		ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%
-			, img\%imageName%-high.png
-		if ErrorLevel {
+
+	; start with lowest quality level, and work up to high
+	imageQuality := "low"
+	ErrorLevel := 1
+	while ErrorLevel {
+		IfExist, img\%imageName%-%imageQuality%.png
+		{
 			ImageSearch, imageLocX, imageLocY, 0, 0, %winSizeX%, %winSizeY%
-				, img\%imageName%-med.png
-			if ErrorLevel {
-				; stretched screen or image not found
-				return false
-			}
+			  , img\%imageName%-%imageQuality%.png
+		}
+		IfNotExist, img\%imageName%-%imageQuality%.png
+		{
+			return false
+		}
+
+		; increment quality for potential future image searches
+		if (imageQuality == "low"){
+			imageQuality := "med"
+		} else if (imageQuality == "med") {
+			imageQuality := "high"
+		} else if (imageQuality == "high") {
+			; stretched screen
+			return false
 		}
 	}
 	return true

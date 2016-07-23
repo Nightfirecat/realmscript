@@ -103,6 +103,11 @@ Return
 	interact()
 Return
 
+; close advertisement with Esc
+Esc::
+	closeAd()
+Return
+
 ; shift+scroll through the chat log with the in-game keybinds
 +WheelUp::
 	scrollChat("up")
