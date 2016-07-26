@@ -15,19 +15,21 @@ goto STARTUP
 STARTUP:
 	; check AHK version, exit if incompatible (v1.1.13 req for arrays)
 	requiredVersion := "1.1.13"
+	runningVersion := A_AhkVersion
 	requiredVersionParts := StrSplit(requiredVersion, ".")
-	runningVersionParts := StrSplit(A_AhkVersion, ".")
+	runningVersionParts := StrSplit(runningVersion, ".")
 	Loop % requiredVersionParts.MaxIndex()
 	{
 		if (runningVersionParts[A_Index] > requiredVersionParts[A_Index]) {
 			break
 		} else if (runningVersionParts[A_Index]
 		           < requiredVersionParts[A_Index]) {
+			ahkSite := "https://autohotkey.com"
 			MsgBox, 16, You must update AHK!, % "Your version of AutoHotKey (v"
-			  . A_AhkVersion . ") is not sufficient to correctly run "
+			  . runningVersion . ") is not sufficient to correctly run "
 			  . "realmscript!`nPlease download and install the latest version "
-			  . "from http://ahkscript.org/ and run realmscript again."
-			Run, http://ahkscript.org/
+			  . "from " . ahkSite . " and run realmscript again."
+			Run, % ahkSite
 			ExitApp
 		}
 	}
