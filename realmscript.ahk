@@ -17,9 +17,12 @@ STARTUP:
 	requiredVersion := "1.1.13"
 	requiredVersionParts := StrSplit(requiredVersion, ".")
 	runningVersionParts := StrSplit(A_AhkVersion, ".")
-	Loop % requiredVersionParts.Length()
+	Loop % requiredVersionParts.MaxIndex()
 	{
-		if (runningVersionParts[A_Index] < requiredVersionParts[A_Index]) {
+		if (runningVersionParts[A_Index] > requiredVersionParts[A_Index]) {
+			break
+		} else if (runningVersionParts[A_Index]
+		           < requiredVersionParts[A_Index]) {
 			MsgBox, 16, You must update AHK!, % "Your version of AutoHotKey (v"
 			  . A_AhkVersion . ") is not sufficient to correctly run "
 			  . "realmscript!`nPlease download and install the latest version "
