@@ -23,4 +23,4 @@ SCROLL_CHAT_DOWN_KEY =
 DISABLE_RESIZE := 0
 
 ; Set to 1 if you use the 100% view mode
-ONEHUNDREDMODE := 1
+ONEHUNDREDMODE := 0
