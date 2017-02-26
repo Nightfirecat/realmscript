@@ -1,8 +1,7 @@
 ; include global options
 global USE_CUSTOM_CURSOR, CUSTOM_CURSOR, CHAT_ACTIVATION_KEY
        , TELL_ACTIVATION_KEY, GUILD_ACTIVATION_KEY, SCROLL_CHAT_UP_KEY
-       , SCROLL_CHAT_DOWN_KEY, DISABLE_RESIZE, ONEHUNDREDMODE
-	   , BROWSERMODE
+       , SCROLL_CHAT_DOWN_KEY, DISABLE_RESIZE
 #include options.ahk
 
 ; check version, install files (for compiled scripts), set up global vars,
@@ -253,31 +252,18 @@ interact() {
 closeAd() {
 	MouseGetPos, mousePosX, mousePosY
 	WinGetPos, , , winSizeX, winSizeY, A
-	stretched := 
-	if(ONEHUNDREDMODE == 1){
-		WinGet, winProcess, ID, A
-		WI := GetWindowInfo(winProcess)
-		
-		if((WI.ClientW < 800) || (WI.ClientH < 600)){
-			; do nothing
-			return
-		} else {
-			buttonCenterX := ((WI.ClientW - 800)/2) + 637
-			buttonCenterY := ((WI.ClientH- 600)/2) + 104
-		}
-	} else if (BROWSERMODE == 1) {
-		if (imageQualitySearch("close", imageLocX, imageLocY)) {
-					imageSearchSizeX := 24
-					imageSearchSizeY := 25
-					windowPosToClientPos(imageLocX, imageLocY, posX, posY)
-					buttonCenterX := posX + Floor(imageSearchSizeX / 2)
-					buttonCenterY := posY + Floor(imageSearchSizeY / 2)
-		} 
-	} else {
+	stretched := !imageQualitySearch("close", imageLocX, imageLocY)
+	if (stretched) {
 		clientButtonX := 637
 		clientButtonY := 104
 		stretchedWindowPosition(clientButtonX, clientButtonY, stretchedX, stretchedY)
 		windowPosToClientPos(stretchedX, stretchedY, buttonCenterX, buttonCenterY)
+	} else {
+		imageSearchSizeX := 24
+		imageSearchSizeY := 25
+		windowPosToClientPos(imageLocX, imageLocY, posX, posY)
+		buttonCenterX := posX + Floor(imageSearchSizeX / 2)
+		buttonCenterY := posY + Floor(imageSearchSizeY / 2)
 	}
 	BlockInput, on
 	CoordMode, Mouse, Client
@@ -293,11 +279,9 @@ closeAd() {
 ; item swap function
 ; move the mouse to the correct slot, double-click, and move it back
 invSwap(slot) {
-	; StretchedScreen := imageQualitySearch("inv", imageLocX, imageLocY) 
 	MouseGetPos, mousePosX, mousePosY ; mousePosX/Y have old mouse position
 	WinGetPos, , , winSizeX, winSizeY, A ; winSizeX/Y have window size
 	WinGet, winProcessName, ProcessName, A
-	WinGet, winProcess, ID, A
 	GetKeyState, LB, LButton, P
 
 	; move the mouse to the correct slot, double-click (using events),
@@ -306,30 +290,7 @@ invSwap(slot) {
 	invIconOffsetY := 46
 	slotOffsetX := Mod((44 * (slot - 1)), (4 * 44))
 	slotOffsetY := (44 * ((slot - 1) // 4))
-	
-	if(ONEHUNDREDMODE == 1){
-		; get the size of the actual game, rather than just the window
-		WI := GetWindowInfo(winProcess)
-		
-		if ((WI.ClientW < 800) || (WI.ClientH < 800)){ ; if the window is smaller than the standard 800x600
-			; do nothing
-			return
-		} else {
-			; simple math that finds the corner of the game in 100% mode
-			slotX := ((WI.ClientW - 800)/2) + 634 + slotOffsetX
-			slotY := ((WI.ClientH- 600)/2) + 400 +  slotOffsetY 
-		}
-	} else if (BROWSERMODE == 1) {
-		if(imageQualitySearch("inv", imageLocX, imageLocY)){
-			MouseGetPos, mousePosX, mousePosY ; do this again, so that the mouse cursor doesn't get unnaturally reset
-
-			windowX := imageLocX + invIconOffsetX + slotOffsetX
-			windowY := imageLocY + invIconOffsetY + slotOffsetY
-
-			; slotX and slotY are set by the function call
-			windowPosToClientPos(windowX, windowY, slotX, slotY)
-		}
-	} else {
+	if (!imageQualitySearch("inv", imageLocX, imageLocY)) {
 		; the image search failed (stretched screen)
 		; determine if the window is a steam or projector window,
 		; and adjust the value accordingly
@@ -341,8 +302,14 @@ invSwap(slot) {
 
 		; slotX and slotY are set by the function call
 		windowPosToClientPos(stretchedX, stretchedY, slotX, slotY)
+	} else {
+		; not stretched, imageLocX/Y are set
+		windowX := imageLocX + invIconOffsetX + slotOffsetX
+		windowY := imageLocY + invIconOffsetY + slotOffsetY
+
+		; slotX and slotY are set by the function call
+		windowPosToClientPos(windowX, windowY, slotX, slotY)
 	}
-	
 	BlockInput, on
 	CoordMode, Mouse, Client
 	MouseMove, slotX, slotY
@@ -454,45 +421,6 @@ windowPosToClientPos(windowX, windowY, byref outputX, byref outputY) {
 		outputX := windowX - vBorderWidth
 		outputY := windowY - (menuHeight + hBorderWidth + titleHeight)
 	}
-}
-
-; ----------------------------------------------------------------------------------------------------------------------
-; GetWindowInfo(HWND)
-; Function:
-;     Retrieves information about the specified window.
-; Parameter:
-;     HWND - A handle to the window whose information is to be retrieved.
-; Return value:
-;     If the function succeeds, the return value is an object containing the information.
-;     If the function fails, the return value is zero.
-; MSDN:
-;     http://msdn.microsoft.com/en-us/library/ms632610(v=vs.85).aspx
-; ----------------------------------------------------------------------------------------------------------------------
-GetWindowInfo(HWND) {
-   Static SizeOfWINDOWINFO := 60
-   ; Struct WINDOWINFO
-   VarSetCapacity(WINDOWINFO, SizeOfWINDOWINFO, 0)
-   NumPut(SizeOfWINDOWINFO, WINDOWINFO, "UInt")
-   If !DllCall("User32.dll\GetWindowInfo", "Ptr", HWND, "Ptr", &WINDOWINFO, "UInt")
-      Return False
-   ; Object WI
-   WI := {}
-   WI.WindowX := NumGet(WINDOWINFO,  4, "Int")                 ; X coordinate of the window
-   WI.WindowY := NumGet(WINDOWINFO,  8, "Int")                 ; Y coordinate of the window
-   WI.WindowW := NumGet(WINDOWINFO, 12, "Int") - WI.WindowX    ; Width of the window
-   WI.WindowH := NumGet(WINDOWINFO, 16, "Int") - WI.WindowY    ; Height of the window
-   WI.ClientX := NumGet(WINDOWINFO, 20, "Int")                 ; X coordinate of the client area
-   WI.ClientY := NumGet(WINDOWINFO, 24, "Int")                 ; Y coordinate of the client area
-   WI.ClientW := NumGet(WINDOWINFO, 28, "Int") - WI.ClientX    ; Width of the client area
-   WI.ClientH := NumGet(WINDOWINFO, 32, "Int") - WI.ClientY    ; Height of the client area
-   WI.Style   := NumGet(WINDOWINFO, 36, "UInt")                ; The window styles.
-   WI.ExStyle := NumGet(WINDOWINFO, 40, "UInt")                ; The extended window styles.
-   WI.State   := NumGet(WINDOWINFO, 44, "UInt")                ; The window status (1 = active).
-   WI.BorderW := NumGet(WINDOWINFO, 48, "UInt")                ; The width of the window border, in pixels.
-   WI.BorderH := NumGet(WINDOWINFO, 52, "UInt")                ; The height of the window border, in pixels.
-   WI.Type    := NumGet(WINDOWINFO, 56, "UShort")              ; The window class atom.
-   WI.Version := NumGet(WINDOWINFO, 58, "UShort")              ; The Windows version of the application.
-   Return WI
 }
 
 ExitSub:
