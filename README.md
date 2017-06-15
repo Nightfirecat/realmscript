@@ -1,9 +1,9 @@
-#Realm Script
+# Realm Script
 
 An <abbr title="AutoHotKey">AHK</abbr> script for Realm of the Mad God,
 enhancing gameplay with hotkeys for useful text and click macros.
 
-##Download and Setup
+## Download and Setup
 
 There are currently two options for using realmscript: running the source script
 or using a compiled .exe of the script. Running the script from source
@@ -12,7 +12,7 @@ features, where using the compiled .exe is a faster and easier way to get
 started and does not require you to install AutoHotKey, *but does not support
 most customization features*!
 
-###Running from source:
+### Running from source:
 
 * [Download the project's files
   here](https://github.com/Nightfirecat/realmscript/zipball/master).
@@ -26,7 +26,7 @@ most customization features*!
   as needed in `hotkeys.ahk`
 * Run `realmscript.ahk` to initiate the script
 
-###Running the compiled .exe:
+### Running the compiled .exe:
 
 * Visit
   [the releases page](https://github.com/Nightfirecat/realmscript/releases) and
@@ -34,7 +34,7 @@ most customization features*!
 * Extract the archive to a folder of your choice
 * Run the included .exe
 
-##Default Binds
+## Default Binds
 
 * `` ` `` : `/pause`
 * `F1` : `Heal please?`
@@ -56,7 +56,7 @@ most customization features*!
   [`/tell mreyeball server`](http://www.realmeye.com/mreyeball#server)
 * right-click : <kbd>shift</kbd> + left-click (identical to using ability or
   drinking potion)
-* <kbd>ctrl</kbd> + right-click : Literal right-click (brings up Flash 
+* <kbd>ctrl</kbd> + right-click : Literal right-click (brings up Flash
   right-click menu, for instance)
 * <kbd>ctrl</kbd> + `t` : Dialog box to set a teleport anchor (person to
   teleport to using `/teleport ...`)
@@ -69,7 +69,7 @@ most customization features*!
 * <kbd>Esc</kbd> : Close the package advertisement modal window that appears
   on login
 
-##Features
+## Features
 
 * Right click sends shift+left click and resends left click if it was set when
   right clicking
@@ -86,7 +86,7 @@ most customization features*!
 * Ctrl+1 and Ctrl+2 act as item-swap binds.
 * Ctrl+q and Ctrl+e are disabled to avoid accidental presses.
 
-##Frequently Asked Questions
+## Frequently Asked Questions
 
 <dl>
 	<dt>I don't like one of the default binds. How do I get rid of it?</dt>
@@ -119,7 +119,7 @@ most customization features*!
 	</dd>
 </dl>
 
-##Troubleshooting
+## Troubleshooting
 
 This section will cover some common issues but will, of course, not be fully
 comprehensive of all possible issues which can occur with this script.  
@@ -160,7 +160,7 @@ the problem.
 	</dd>
 </dl>
 
-##Personal Thanks
+## Personal Thanks
 
 I'd like to extend a big personal thanks to a couple people who made this
 project possible.
