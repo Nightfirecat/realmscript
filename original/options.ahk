@@ -21,9 +21,3 @@ SCROLL_CHAT_DOWN_KEY =
 ; Disables resizable borders for projector and Steam when focused
 ; (must restart client with option disabled to bring back normal borders)
 DISABLE_RESIZE := 0
-
-; Set to 1 if you play RotMG in browser
-BROWSERMODE := 0
-
-; Set to 1 if you use the 100% view mode
-ONEHUNDREDMODE := 0
